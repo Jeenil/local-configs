@@ -1,19 +1,17 @@
-# Setup-PowerShellProfiles.ps1
-# Script to set up synchronized PowerShell profiles for PS5 and PS7
-# Ensures both PowerShell versions use the same repository location
+# Fix-PowerShellProfiles.ps1
+# This script directly creates profile files with hardcoded paths
+# Run with administrator privileges if possible
 
-# Define the profile paths
+# Define the profile paths explicitly
 $ps5ProfilePath = "$env:USERPROFILE\OneDrive - LogixHealth Inc\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 $ps7ProfilePath = "$env:USERPROFILE\OneDrive - LogixHealth Inc\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
 
-# Define the absolute path to your repository
-# We'll get this from the current script's location
-$scriptPath = $MyInvocation.MyCommand.Path
-$repoLocalPath = Split-Path -Parent $scriptPath
-$repoLocalPath = Resolve-Path $repoLocalPath
+# Hardcode the repository path
+$repoLocalPath = "C:\repositories\local-configs"
 
-Write-Host "Repository path detected as: $repoLocalPath" -ForegroundColor Cyan
-Write-Host "This path will be hardcoded in both profile files" -ForegroundColor Cyan
+Write-Host "Using hardcoded repository path: $repoLocalPath" -ForegroundColor Cyan
+Write-Host "PS5 Profile Path: $ps5ProfilePath" -ForegroundColor Cyan
+Write-Host "PS7 Profile Path: $ps7ProfilePath" -ForegroundColor Cyan
 
 # Ensure the profile directories exist
 $ps5ProfileDir = Split-Path -Parent $ps5ProfilePath
@@ -29,7 +27,7 @@ if (-not (Test-Path $ps7ProfileDir)) {
     Write-Host "Created PS7 profile directory: $ps7ProfileDir" -ForegroundColor Green
 }
 
-# Create identical loader scripts for both PS5 and PS7 with the ABSOLUTE repository path
+# Create identical loader scripts for both PS5 and PS7 with the hardcoded repository path
 $loaderScript = @"
 # PowerShell Profile Loader 
 # Sources configuration from local repository: $repoLocalPath
@@ -79,27 +77,52 @@ if (Test-Path `$scriptsDir) {
         }
     }
 }
-
-# Auto-sync the profile with GitHub on startup (optional - comment out if you don't want this)
-if (Get-Command git -ErrorAction SilentlyContinue) {
-    try {
-        Push-Location `$repoPath
-        git pull -q
-        Pop-Location
-    } catch {
-        Write-Warning "Error syncing with git: `$_"
-    }
-}
 "@
 
-# Write the identical loader script to both profile files
-Set-Content -Path $ps5ProfilePath -Value $loaderScript -Force
-Set-Content -Path $ps7ProfilePath -Value $loaderScript -Force
+# Try to write the profile files with detailed error reporting
+try {
+    # Write PS5 profile
+    Write-Host "Attempting to write PS5 profile..." -ForegroundColor Yellow
+    Set-Content -Path $ps5ProfilePath -Value $loaderScript -Force -ErrorAction Stop
+    Write-Host "PS5 profile successfully written!" -ForegroundColor Green
+} catch {
+    Write-Host "Error writing PS5 profile: $_" -ForegroundColor Red
+    Write-Host "Attempting alternative method for PS5..." -ForegroundColor Yellow
+    
+    try {
+        # Alternative method using Out-File
+        $loaderScript | Out-File -FilePath $ps5ProfilePath -Force -Encoding utf8
+        if (Test-Path $ps5ProfilePath) {
+            Write-Host "PS5 profile written using alternative method!" -ForegroundColor Green
+        } else {
+            Write-Host "Failed to write PS5 profile using alternative method." -ForegroundColor Red
+        }
+    } catch {
+        Write-Host "Alternative method also failed: $_" -ForegroundColor Red
+    }
+}
 
-Write-Host "`nProfile setup complete!" -ForegroundColor Green
-Write-Host "PS5 Profile: $ps5ProfilePath" -ForegroundColor Cyan
-Write-Host "PS7 Profile: $ps7ProfilePath" -ForegroundColor Cyan
-Write-Host "Both profiles now point to the same repository path: $repoLocalPath" -ForegroundColor Green
+try {
+    # Write PS7 profile
+    Write-Host "Attempting to write PS7 profile..." -ForegroundColor Yellow
+    Set-Content -Path $ps7ProfilePath -Value $loaderScript -Force -ErrorAction Stop
+    Write-Host "PS7 profile successfully written!" -ForegroundColor Green
+} catch {
+    Write-Host "Error writing PS7 profile: $_" -ForegroundColor Red
+    Write-Host "Attempting alternative method for PS7..." -ForegroundColor Yellow
+    
+    try {
+        # Alternative method using Out-File
+        $loaderScript | Out-File -FilePath $ps7ProfilePath -Force -Encoding utf8
+        if (Test-Path $ps7ProfilePath) {
+            Write-Host "PS7 profile written using alternative method!" -ForegroundColor Green
+        } else {
+            Write-Host "Failed to write PS7 profile using alternative method." -ForegroundColor Red
+        }
+    } catch {
+        Write-Host "Alternative method also failed: $_" -ForegroundColor Red
+    }
+}
 
 # Check if the repository has the expected directory structure and create it if not
 $powershellDir = Join-Path $repoLocalPath "PowerShell"
@@ -197,18 +220,6 @@ function Get-PS7Only {
 
 # PS7 specific features
 `$PSStyle.FileInfo.Directory = "`e[34;1m"
-"@},
-    @{Path = (Join-Path $scriptsDir "Example-Script.ps1"); Name = "Example Script"; Template = @"
-# Example-Script.ps1
-# This script will be automatically loaded by both PS5 and PS7 profiles
-
-function Get-HelloWorld {
-    param(
-        [string]$Name = "World"
-    )
-    
-    Write-Host "Hello, $Name!" -ForegroundColor Cyan
-}
 "@}
 )
 
@@ -221,72 +232,38 @@ foreach ($file in $filesToCheck) {
     }
 }
 
-# Create a verification script to check that profiles are correctly set up
-$verifyScriptPath = Join-Path $repoLocalPath "Verify-ProfileSetup.ps1"
-$verifyScriptContent = @"
-# Verify-ProfileSetup.ps1
-# Verifies that both PS5 and PS7 profiles point to the same repository location
+# Create manual copy instructions if PowerShell can't write to the profile files
+$manualInstructionsPath = Join-Path $repoLocalPath "Manual-Profile-Setup.txt"
+$manualInstructions = @"
+== MANUAL PROFILE SETUP INSTRUCTIONS ==
 
-Write-Host "Profile Verification Tool" -ForegroundColor Cyan
-Write-Host "------------------------" -ForegroundColor Cyan
+If the automatic setup script couldn't write to your profile files, follow these steps:
 
-# Current PowerShell version
-`$currentVersion = `$PSVersionTable.PSVersion.Major
-Write-Host "Current PowerShell version: `$currentVersion" -ForegroundColor Yellow
+1. Copy the following text:
+------------- BEGIN PROFILE TEXT -------------
+$loaderScript
+------------- END PROFILE TEXT -------------
 
-# Current profile path
-Write-Host "Current profile path: `$PROFILE" -ForegroundColor Yellow
+2. Manually paste this text into both of these files:
+   - PS5 Profile: $ps5ProfilePath
+   - PS7 Profile: $ps7ProfilePath
 
-# Check if profile exists
-if (Test-Path `$PROFILE) {
-    Write-Host "Profile exists: Yes" -ForegroundColor Green
-    
-    # Get the content of the profile
-    `$profileContent = Get-Content `$PROFILE -Raw
-    
-    # Check if the repository path is in the profile
-    if (`$profileContent -like "*$repoLocalPath*") {
-        Write-Host "Repository path found in profile: Yes" -ForegroundColor Green
-        Write-Host "Repository path: $repoLocalPath" -ForegroundColor Green
-    } else {
-        Write-Host "Repository path found in profile: No" -ForegroundColor Red
-        Write-Host "Please run Setup-PowerShellProfiles.ps1 to fix this" -ForegroundColor Red
-    }
-} else {
-    Write-Host "Profile exists: No" -ForegroundColor Red
-    Write-Host "Please run Setup-PowerShellProfiles.ps1 to create the profile" -ForegroundColor Red
-}
+3. Create the following directory structure in your repository if it doesn't exist:
+   - $powershellDir
+   - $scriptsDir
 
-# Check if repository files exist
-`$powershellDir = Join-Path "$repoLocalPath" "PowerShell"
-`$commonProfilePath = Join-Path `$powershellDir "common-profile.ps1"
-`$versionSpecificPath = Join-Path `$powershellDir "ps`$currentVersion-profile.ps1"
+4. Restart PowerShell after making these changes
 
-if (Test-Path `$commonProfilePath) {
-    Write-Host "Common profile exists: Yes" -ForegroundColor Green
-} else {
-    Write-Host "Common profile exists: No" -ForegroundColor Red
-}
-
-if (Test-Path `$versionSpecificPath) {
-    Write-Host "PS`$currentVersion profile exists: Yes" -ForegroundColor Green
-} else {
-    Write-Host "PS`$currentVersion profile exists: No" -ForegroundColor Red
-}
-
-Write-Host "`nIf any issues were found, please run Setup-PowerShellProfiles.ps1 to fix them" -ForegroundColor Yellow
+== END OF INSTRUCTIONS ==
 "@
 
-Set-Content -Path $verifyScriptPath -Value $verifyScriptContent -Force
-Write-Host "Created verification script: $verifyScriptPath" -ForegroundColor Green
+Set-Content -Path $manualInstructionsPath -Value $manualInstructions -Force
+Write-Host "`nCreated manual setup instructions at: $manualInstructionsPath" -ForegroundColor Yellow
+Write-Host "If the automatic setup didn't work, follow these manual instructions." -ForegroundColor Yellow
 
-Write-Host "`nNext Steps:" -ForegroundColor Cyan
-Write-Host "1. Review and customize the template files in: $powershellDir" -ForegroundColor White
-Write-Host "2. Add any additional PowerShell scripts to: $scriptsDir" -ForegroundColor White
-Write-Host "3. Commit and push your changes to GitHub:" -ForegroundColor White
-Write-Host "   git add ." -ForegroundColor Gray
-Write-Host "   git commit -m 'Added PowerShell profiles and scripts'" -ForegroundColor Gray
-Write-Host "   git push" -ForegroundColor Gray
-Write-Host "4. Restart PowerShell to apply the changes" -ForegroundColor White
-Write-Host "5. Run Verify-ProfileSetup.ps1 to confirm everything is working" -ForegroundColor White
-Write-Host "6. To update your profile in the future, run: Update-Profile" -ForegroundColor White
+# Display verification steps
+Write-Host "`nTo verify the setup:" -ForegroundColor Cyan
+Write-Host "1. Restart both PowerShell 5 and PowerShell 7" -ForegroundColor White
+Write-Host "2. Run the following command in each:" -ForegroundColor White
+Write-Host "   Write-Host `"Repository path: $repoLocalPath`" -ForegroundColor Green; Write-Host `"Profile path: `$PROFILE`" -ForegroundColor Cyan" -ForegroundColor Gray
+Write-Host "3. The repository path should appear correctly in both PS5 and PS7" -ForegroundColor White
