@@ -11,126 +11,155 @@ local-configs/
 │   ├── ps5-profile.ps1         # PowerShell 5.x specific settings
 │   ├── ps7-profile.ps1         # PowerShell 7+ specific settings
 │   └── Scripts/                # Additional PowerShell scripts
-├── AutoHotkey/                 # (Future) AutoHotkey scripts
+├── AutoHotkey/
+│   └── main.ahk               # AutoHotkey shortcuts and productivity scripts
+├── Setup-PowerShellProfile.ps1 # Universal setup script
 └── README.md
 ```
 
 ## 🚀 Quick Setup
 
-### PowerShell Profile Setup
+### One-Line Setup (Recommended)
 
-1. Clone this repository:
-   ```powershell
-   git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\local-configs"
-   ```
+Run this command in PowerShell on any machine (work or personal):
 
-2. Create a loader profile that points to this repo:
-   ```powershell
-   # Create the loader profile
-   @"
-   # PowerShell Profile Loader
-   `$repoPath = "$env:USERPROFILE\repos\local-configs"
-   if (Test-Path `$repoPath) {
-       . "`$repoPath\PowerShell\common-profile.ps1"
-       `$versionProfile = if (`$PSVersionTable.PSVersion.Major -ge 7) {
-           "`$repoPath\PowerShell\ps7-profile.ps1"
-       } else {
-           "`$repoPath\PowerShell\ps5-profile.ps1"
-       }
-       if (Test-Path `$versionProfile) { . `$versionProfile }
-   }
-   "@ | Set-Content -Path $PROFILE -Force
-   
-   # Reload profile
-   . $PROFILE
-   ```
+```powershell
+irm https://raw.githubusercontent.com/Jeenil/local-configs/main/Setup-PowerShellProfile.ps1 | iex
+```
+
+This automatically:
+- Detects if you're on a work or personal machine
+- Clones the repository to the correct location
+- Sets up your PowerShell profile
+- Creates all necessary directories
+
+### Manual Setup
+
+If you prefer to set up manually:
+
+```powershell
+# Clone repository
+git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\local-configs"
+
+# Run setup script
+& "$env:USERPROFILE\repos\local-configs\Setup-PowerShellProfile.ps1"
+```
 
 ## 📋 PowerShell Features
 
 ### Aliases
-- `ll` - List files (alias for Get-ChildItem)
+- `ll` - List files (detailed view)
 - `la` - List all files including hidden
 - `which` - Find command location
 - `grep` - Search in files (Select-String)
 - `touch` - Create new file
 - `e` - Open Explorer in current directory
+- `c` - Clear screen
 
-### Git Shortcuts
-- `gs` - git status
-- `ga` - git add
-- `gc` - git commit -m
-- `gp` - git push
-- `gpull` - git pull
-- `gl` - git log (last 10 commits)
-- `gco` - git checkout
-
-### Navigation
-- `repos` - Go to ~/repos
-- `home` - Go to home directory
+### Navigation Shortcuts
+- `r` / `repos` - Go to repositories folder
+- `h` / `docs` - Go to Documents folder
+- `home` - Go to user home
 - `desktop` - Go to Desktop
 - `downloads` - Go to Downloads
 - `up [n]` - Go up n directories
 - `mkcd <name>` - Create and enter directory
+- `projects` - Go to projects folder (personal machines only)
+- `work` - Go to work folder (work machines only)
 
 ### Utilities
 - `Get-MyIP` - Show local and public IP addresses
-- Custom colored prompt with git branch display
+- `Update-Profile` - Pull latest changes and reload profile
+- `help-me` - Show all available commands
+- Custom colored prompt with environment indicator
+
+## ⌨️ AutoHotkey Shortcuts
+
+### Core Hotkeys
+- `Ctrl+Shift+Alt+R` - Reload AutoHotkey script
+- `Ctrl+Shift+Alt+S` - Suspend/resume AutoHotkey
+- `Win+Down` - Minimize active window
+
+### Window Cycling
+- `Win+Tab` - Cycle forward through windows of the same program
+- `Win+Shift+Tab` - Cycle backward through windows of the same program
+
+### Quick Launch Applications
+- `Ctrl+1` - Windows Terminal
+- `Ctrl+2` - VS Code
+- `Ctrl+3` - Obsidian
+- `Ctrl+4` - Chrome
+- `Ctrl+5` - Edge
+- `Ctrl+6` - Notepad++
+
+### AutoHotkey Setup
+
+1. Install AutoHotkey v2: https://www.autohotkey.com/
+2. The setup script will link to the AutoHotkey config in this repo
+3. Or manually run: `AutoHotkey\main.ahk`
+
+To auto-start with Windows:
+```powershell
+# Create startup shortcut
+$startup = [Environment]::GetFolderPath('Startup')
+$target = "$env:USERPROFILE\repos\local-configs\AutoHotkey\main.ahk"
+$shortcut = "$startup\AutoHotkey.lnk"
+
+$shell = New-Object -ComObject WScript.Shell
+$link = $shell.CreateShortcut($shortcut)
+$link.TargetPath = $target
+$link.Save()
+```
 
 ## 🔧 Customization
 
-### Adding New Aliases or Functions
+### PowerShell
+- **Common settings**: Edit `PowerShell/common-profile.ps1`
+- **PS5-specific**: Edit `PowerShell/ps5-profile.ps1`
+- **PS7-specific**: Edit `PowerShell/ps7-profile.ps1`
+- **Add scripts**: Drop `.ps1` files in `PowerShell/Scripts/`
 
-Edit `PowerShell/common-profile.ps1` to add aliases or functions that should be available in all PowerShell sessions.
-
-### Version-Specific Settings
-
-- **PowerShell 5.x**: Edit `PowerShell/ps5-profile.ps1`
-- **PowerShell 7+**: Edit `PowerShell/ps7-profile.ps1`
-
-### Adding Scripts
-
-Drop any `.ps1` files into `PowerShell/Scripts/` and they'll be automatically loaded.
+### AutoHotkey
+- Edit `AutoHotkey/main.ahk` to add or modify shortcuts
+- Reload with `Ctrl+Shift+Alt+R` after changes
 
 ## 🔄 Syncing Changes
 
 After making changes:
 
 ```powershell
-cd "$env:USERPROFILE\repos\local-configs"
+cd "$env:USERPROFILE\repos\local-configs"  # or C:\repositories\local-configs
 git add .
-git commit -m "Update PowerShell configuration"
+git commit -m "Update configuration"
 git push
 ```
 
 On another machine:
 
 ```powershell
-cd "$env:USERPROFILE\repos\local-configs"
-git pull
-. $PROFILE  # Reload profile
+Update-Profile  # This pulls changes and reloads
 ```
 
-## 🖥️ Multi-Machine Setup
+## 🖥️ Multi-Machine Support
 
-This configuration supports multiple machines. The profile loader always points to the local clone of this repository, making it easy to:
+The configuration automatically detects:
+- **Work machines**: Domain matches LogixHealth or username is jeepatel
+- **Personal machines**: Everything else
 
-1. Make changes on one machine
-2. Push to GitHub
-3. Pull on another machine
-4. Changes are immediately available
+Based on detection:
+- Repository location adjusts (`C:\repos` vs `C:\repositories`)
+- Navigation shortcuts adapt (work folder vs projects folder)
+- Prompt colors indicate environment
 
-## 📝 Future Additions
+## 📝 Included Tools
 
-- [ ] AutoHotkey scripts for productivity
+- [x] PowerShell profiles (PS5 & PS7)
+- [x] AutoHotkey productivity shortcuts
+- [x] Universal setup script
 - [ ] Windows Terminal settings
 - [ ] VS Code settings sync
 - [ ] Git configuration
-- [ ] Additional PowerShell modules
 
 ## 🤝 Contributing
 
 This is a personal configuration repository, but feel free to fork and adapt for your own use!
-
-## 📄 License
-
-MIT - Feel free to use and modify as needed.
