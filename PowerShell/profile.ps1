@@ -37,7 +37,7 @@ Set-Alias touch New-Item
 function .. { Set-Location .. }
 function ... { Set-Location ..\.. }
 function ~ { Set-Location $HOME }
-function repos {
+function r {
     $repoPath = if (Test-Path "C:\repos") { "C:\repos" } else { "C:\repositories" }
     Set-Location $repoPath
 }
@@ -121,187 +121,7 @@ function gbd {
     # Git branch delete (local and remote)
     param([string]$branchOrNumber)
     
-    if ($branchOrNumber -match '^\d+
-
-# System Info and Utilities
-function sysinfo {
-    Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "  System Information" -ForegroundColor White
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "Computer     : $env:COMPUTERNAME" -ForegroundColor Green
-    Write-Host "User         : $env:USERNAME" -ForegroundColor Green
-    Write-Host "Domain       : $env:USERDOMAIN" -ForegroundColor Green
-    Write-Host "PowerShell   : $($PSVersionTable.PSVersion)" -ForegroundColor Green
-    Write-Host "OS           : $(Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption)" -ForegroundColor Green
-    Write-Host "Uptime       : $((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime)" -ForegroundColor Green
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
-}
-
-# Enhanced help function
-function help-me {
-    Write-Host "`n╔═══════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║       PowerShell Commands Help        ║" -ForegroundColor Magenta
-    Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
-    
-    Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
-    Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
-    Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
-    Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
-    Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
-    
-    Write-Host "`n🔧 Git Commands (Basic):" -ForegroundColor Yellow
-    Write-Host "  gs         → git status (porcelain)" -ForegroundColor Gray
-    Write-Host "  ga         → git add" -ForegroundColor Gray
-    Write-Host "  gaa        → git add --all" -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit all + push" -ForegroundColor Gray
-    Write-Host "  gp         → git pull --rebase" -ForegroundColor Gray
-    Write-Host "  gu         → git push" -ForegroundColor Gray
-    Write-Host "  guf        → git push --force" -ForegroundColor Gray
-    Write-Host "  gd         → git diff" -ForegroundColor Gray
-    Write-Host "  gl         → git log" -ForegroundColor Gray
-    Write-Host "  glg        → git log graph (pretty)" -ForegroundColor Gray
-    
-    Write-Host "`n🔀 Git Branches:" -ForegroundColor Yellow
-    Write-Host "  gb desc    → create branch (auto-named)" -ForegroundColor Gray
-    Write-Host "  gbl        → list branches with numbers" -ForegroundColor Gray
-    Write-Host "  gsw 2      → switch to branch #2" -ForegroundColor Gray
-    Write-Host "  gswm       → switch to main + cleanup" -ForegroundColor Gray
-    Write-Host "  gbd 2      → delete branch #2 (local+remote)" -ForegroundColor Gray
-    Write-Host "  gbdl 2     → delete branch #2 (local only)" -ForegroundColor Gray
-    Write-Host "  gbc        → clean merged branches" -ForegroundColor Gray
-    Write-Host "  gbs        → squash all branch commits" -ForegroundColor Gray
-    
-    Write-Host "`n📝 Git Advanced:" -ForegroundColor Yellow
-    Write-Host "  gpr        → create pull request" -ForegroundColor Gray
-    Write-Host "  gcs        → show last commit in browser" -ForegroundColor Gray
-    Write-Host "  gcu        → undo last commit (soft)" -ForegroundColor Gray
-    Write-Host "  grb        → git rebase" -ForegroundColor Gray
-    Write-Host "  grbm       → rebase on main" -ForegroundColor Gray
-    Write-Host "  grbc       → rebase continue" -ForegroundColor Gray
-    Write-Host "  gsq 3      → squash last 3 commits" -ForegroundColor Gray
-    Write-Host "  gst/gstp   → stash/stash pop" -ForegroundColor Gray
-    Write-Host "  grv sha    → revert commit" -ForegroundColor Gray
-    Write-Host "  grvl       → revert last commit" -ForegroundColor Gray
-    
-    Write-Host "`n☁️ Infrastructure:" -ForegroundColor Yellow
-    Write-Host "  ti         → terraform init" -ForegroundColor Gray
-    Write-Host "  ta         → terraform apply" -ForegroundColor Gray
-    Write-Host "  td         → terraform destroy" -ForegroundColor Gray
-    Write-Host "  tf         → terraform fmt" -ForegroundColor Gray
-    Write-Host "  tv         → terraform validate" -ForegroundColor Gray
-    Write-Host "  tc         → terraform clean (remove files)" -ForegroundColor Gray
-    
-    Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
-    Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
-    Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
-    Write-Host "  grep       → Search in files" -ForegroundColor Gray
-    Write-Host "  touch file → Create empty file" -ForegroundColor Gray
-    Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
-    Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
-    Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
-    
-    Write-Host "`n💡 Tips:" -ForegroundColor Yellow
-    Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
-    Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
-    Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-# Quick file operations
-function mkcd { 
-    param($dir) 
-    mkdir $dir -ErrorAction SilentlyContinue
-    cd $dir 
-}
-
-# Reload profile
-function reload {
-    Write-Host "Reloading profile..." -ForegroundColor Yellow
-    . $PROFILE
-    Write-Host "✓ Profile reloaded!" -ForegroundColor Green
-}
-
-# Pretty directory listing
-function la {
-    Get-ChildItem -Force | Format-Table Mode, LastWriteTime, Length, Name -AutoSize
-}
-
-# Search functions
-function find-file {
-    param([string]$name)
-    Write-Host "Searching for '$name'..." -ForegroundColor Yellow
-    Get-ChildItem -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$name*" }
-}
-
-function find-text {
-    param([string]$pattern, [string]$path = ".")
-    Write-Host "Searching for '$pattern' in $path..." -ForegroundColor Yellow
-    Get-ChildItem -Path $path -Recurse -File | Select-String -Pattern $pattern
-}
-
-# Quick calculations
-function calc {
-    param([string]$expression)
-    try {
-        $result = Invoke-Expression $expression
-        Write-Host "$expression = " -NoNewline -ForegroundColor Gray
-        Write-Host $result -ForegroundColor Green
-    } catch {
-        Write-Host "Invalid expression" -ForegroundColor Red
-    }
-}
-
-# Version-specific features (handles both PS5 & PS7)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    # PS7+ specific features
-    if ($PSStyle) {
-        $PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue + $PSStyle.Bold
-        $PSStyle.FileInfo.Executable = $PSStyle.Foreground.Green
-        $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.Cyan
-    }
-    
-    # Tab completion improvements for PS7
-    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
-}
-else {
-    # PS5 compatibility
-    # Tab completion for PS5
-    Set-PSReadLineKeyHandler -Key Tab -Function Complete
-}
-
-# Common PSReadLine settings (both PS5 & PS7)
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Load additional functions if they exist
-$functionsPath = Join-Path $PSScriptRoot "functions.ps1"
-if (Test-Path $functionsPath) { . $functionsPath }
-
-# Load work-specific settings if on work machine
-if ($env:USERDOMAIN -match "LogixHealth|LOGIX") {
-    $workPath = Join-Path $PSScriptRoot "work-specific.ps1"
-    if (Test-Path $workPath) { . $workPath }
-}
-
-# Welcome message with ASCII art
-Clear-Host
-Write-Host @"
-    ____                          _____ __         ____
-   / __ \____ _      _____  _____/ ___// /_  ___  / / /
-  / /_/ / __ \ | /| / / _ \/ ___/\__ \/ __ \/ _ \/ / / 
- / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  
-/_/    \____/|__/|__/\___/_/   /____/_/ /_/\___/_/_/   
-                                                        
-"@ -ForegroundColor Cyan
-
-Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString()) Ready!" -ForegroundColor Green
-Write-Host "Type 'help-me' for available commands" -ForegroundColor DarkGray
-Write-Host "") {
+    if ($branchOrNumber -match '^\d+$') {
         $branches = git for-each-ref --format="%(refname:short)" refs/heads/ | Sort-Object
         $branchName = $branches[$branchOrNumber - 1]
     } else {
@@ -327,155 +147,7 @@ function gbdl {
     # Git branch delete local only
     param([string]$branchOrNumber)
     
-    if ($branchOrNumber -match '^\d+
-
-# System Info and Utilities
-function sysinfo {
-    Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "  System Information" -ForegroundColor White
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "Computer     : $env:COMPUTERNAME" -ForegroundColor Green
-    Write-Host "User         : $env:USERNAME" -ForegroundColor Green
-    Write-Host "Domain       : $env:USERDOMAIN" -ForegroundColor Green
-    Write-Host "PowerShell   : $($PSVersionTable.PSVersion)" -ForegroundColor Green
-    Write-Host "OS           : $(Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption)" -ForegroundColor Green
-    Write-Host "Uptime       : $((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime)" -ForegroundColor Green
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
-}
-
-# Enhanced help function
-function help-me {
-    Write-Host "`n╔═══════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║       PowerShell Commands Help        ║" -ForegroundColor Magenta
-    Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
-    
-    Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
-    Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
-    Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
-    Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
-    Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
-    
-    Write-Host "`n🔧 Git Commands:" -ForegroundColor Yellow
-    Write-Host "  gs         → git status" -ForegroundColor Gray
-    Write-Host "  ga         → git add ." -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit -m 'msg'" -ForegroundColor Gray
-    Write-Host "  gp         → git push" -ForegroundColor Gray
-    Write-Host "  gpl        → git pull" -ForegroundColor Gray
-    Write-Host "  gl         → git log (last 10)" -ForegroundColor Gray
-    Write-Host "  gb         → git branch" -ForegroundColor Gray
-    Write-Host "  gco branch → git checkout branch" -ForegroundColor Gray
-    
-    Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
-    Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
-    Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
-    Write-Host "  grep       → Search in files" -ForegroundColor Gray
-    Write-Host "  touch file → Create empty file" -ForegroundColor Gray
-    Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
-    Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
-    Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
-    
-    Write-Host "`n💡 Tips:" -ForegroundColor Yellow
-    Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
-    Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
-    Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-# Quick file operations
-function mkcd { 
-    param($dir) 
-    mkdir $dir -ErrorAction SilentlyContinue
-    cd $dir 
-}
-
-# Reload profile
-function reload {
-    Write-Host "Reloading profile..." -ForegroundColor Yellow
-    . $PROFILE
-    Write-Host "✓ Profile reloaded!" -ForegroundColor Green
-}
-
-# Pretty directory listing
-function la {
-    Get-ChildItem -Force | Format-Table Mode, LastWriteTime, Length, Name -AutoSize
-}
-
-# Search functions
-function find-file {
-    param([string]$name)
-    Write-Host "Searching for '$name'..." -ForegroundColor Yellow
-    Get-ChildItem -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$name*" }
-}
-
-function find-text {
-    param([string]$pattern, [string]$path = ".")
-    Write-Host "Searching for '$pattern' in $path..." -ForegroundColor Yellow
-    Get-ChildItem -Path $path -Recurse -File | Select-String -Pattern $pattern
-}
-
-# Quick calculations
-function calc {
-    param([string]$expression)
-    try {
-        $result = Invoke-Expression $expression
-        Write-Host "$expression = " -NoNewline -ForegroundColor Gray
-        Write-Host $result -ForegroundColor Green
-    } catch {
-        Write-Host "Invalid expression" -ForegroundColor Red
-    }
-}
-
-# Version-specific features (handles both PS5 & PS7)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    # PS7+ specific features
-    if ($PSStyle) {
-        $PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue + $PSStyle.Bold
-        $PSStyle.FileInfo.Executable = $PSStyle.Foreground.Green
-        $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.Cyan
-    }
-    
-    # Tab completion improvements for PS7
-    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
-}
-else {
-    # PS5 compatibility
-    # Tab completion for PS5
-    Set-PSReadLineKeyHandler -Key Tab -Function Complete
-}
-
-# Common PSReadLine settings (both PS5 & PS7)
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Load additional functions if they exist
-$functionsPath = Join-Path $PSScriptRoot "functions.ps1"
-if (Test-Path $functionsPath) { . $functionsPath }
-
-# Load work-specific settings if on work machine
-if ($env:USERDOMAIN -match "LogixHealth|LOGIX") {
-    $workPath = Join-Path $PSScriptRoot "work-specific.ps1"
-    if (Test-Path $workPath) { . $workPath }
-}
-
-# Welcome message with ASCII art
-Clear-Host
-Write-Host @"
-    ____                          _____ __         ____
-   / __ \____ _      _____  _____/ ___// /_  ___  / / /
-  / /_/ / __ \ | /| / / _ \/ ___/\__ \/ __ \/ _ \/ / / 
- / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  
-/_/    \____/|__/|__/\___/_/   /____/_/ /_/\___/_/_/   
-                                                        
-"@ -ForegroundColor Cyan
-
-Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString()) Ready!" -ForegroundColor Green
-Write-Host "Type 'help-me' for available commands" -ForegroundColor DarkGray
-Write-Host "") {
+    if ($branchOrNumber -match '^\d+$') {
         $branches = git for-each-ref --format="%(refname:short)" refs/heads/ | Sort-Object
         $branchName = $branches[$branchOrNumber - 1]
     } else {
@@ -556,307 +228,11 @@ function gcs {
     
     if ($remoteUrl -match "github.com") {
         if ($remoteUrl -match "^git@") {
-            $owner = $remoteUrl -replace '^git@github\.com:([^/]+)/.*\.git
-
-# System Info and Utilities
-function sysinfo {
-    Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "  System Information" -ForegroundColor White
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "Computer     : $env:COMPUTERNAME" -ForegroundColor Green
-    Write-Host "User         : $env:USERNAME" -ForegroundColor Green
-    Write-Host "Domain       : $env:USERDOMAIN" -ForegroundColor Green
-    Write-Host "PowerShell   : $($PSVersionTable.PSVersion)" -ForegroundColor Green
-    Write-Host "OS           : $(Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption)" -ForegroundColor Green
-    Write-Host "Uptime       : $((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime)" -ForegroundColor Green
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
-}
-
-# Enhanced help function
-function help-me {
-    Write-Host "`n╔═══════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║       PowerShell Commands Help        ║" -ForegroundColor Magenta
-    Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
-    
-    Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
-    Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
-    Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
-    Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
-    Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
-    
-    Write-Host "`n🔧 Git Commands:" -ForegroundColor Yellow
-    Write-Host "  gs         → git status" -ForegroundColor Gray
-    Write-Host "  ga         → git add ." -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit -m 'msg'" -ForegroundColor Gray
-    Write-Host "  gp         → git push" -ForegroundColor Gray
-    Write-Host "  gpl        → git pull" -ForegroundColor Gray
-    Write-Host "  gl         → git log (last 10)" -ForegroundColor Gray
-    Write-Host "  gb         → git branch" -ForegroundColor Gray
-    Write-Host "  gco branch → git checkout branch" -ForegroundColor Gray
-    
-    Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
-    Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
-    Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
-    Write-Host "  grep       → Search in files" -ForegroundColor Gray
-    Write-Host "  touch file → Create empty file" -ForegroundColor Gray
-    Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
-    Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
-    Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
-    
-    Write-Host "`n💡 Tips:" -ForegroundColor Yellow
-    Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
-    Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
-    Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-# Quick file operations
-function mkcd { 
-    param($dir) 
-    mkdir $dir -ErrorAction SilentlyContinue
-    cd $dir 
-}
-
-# Reload profile
-function reload {
-    Write-Host "Reloading profile..." -ForegroundColor Yellow
-    . $PROFILE
-    Write-Host "✓ Profile reloaded!" -ForegroundColor Green
-}
-
-# Pretty directory listing
-function la {
-    Get-ChildItem -Force | Format-Table Mode, LastWriteTime, Length, Name -AutoSize
-}
-
-# Search functions
-function find-file {
-    param([string]$name)
-    Write-Host "Searching for '$name'..." -ForegroundColor Yellow
-    Get-ChildItem -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$name*" }
-}
-
-function find-text {
-    param([string]$pattern, [string]$path = ".")
-    Write-Host "Searching for '$pattern' in $path..." -ForegroundColor Yellow
-    Get-ChildItem -Path $path -Recurse -File | Select-String -Pattern $pattern
-}
-
-# Quick calculations
-function calc {
-    param([string]$expression)
-    try {
-        $result = Invoke-Expression $expression
-        Write-Host "$expression = " -NoNewline -ForegroundColor Gray
-        Write-Host $result -ForegroundColor Green
-    } catch {
-        Write-Host "Invalid expression" -ForegroundColor Red
-    }
-}
-
-# Version-specific features (handles both PS5 & PS7)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    # PS7+ specific features
-    if ($PSStyle) {
-        $PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue + $PSStyle.Bold
-        $PSStyle.FileInfo.Executable = $PSStyle.Foreground.Green
-        $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.Cyan
-    }
-    
-    # Tab completion improvements for PS7
-    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
-}
-else {
-    # PS5 compatibility
-    # Tab completion for PS5
-    Set-PSReadLineKeyHandler -Key Tab -Function Complete
-}
-
-# Common PSReadLine settings (both PS5 & PS7)
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Load additional functions if they exist
-$functionsPath = Join-Path $PSScriptRoot "functions.ps1"
-if (Test-Path $functionsPath) { . $functionsPath }
-
-# Load work-specific settings if on work machine
-if ($env:USERDOMAIN -match "LogixHealth|LOGIX") {
-    $workPath = Join-Path $PSScriptRoot "work-specific.ps1"
-    if (Test-Path $workPath) { . $workPath }
-}
-
-# Welcome message with ASCII art
-Clear-Host
-Write-Host @"
-    ____                          _____ __         ____
-   / __ \____ _      _____  _____/ ___// /_  ___  / / /
-  / /_/ / __ \ | /| / / _ \/ ___/\__ \/ __ \/ _ \/ / / 
- / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  
-/_/    \____/|__/|__/\___/_/   /____/_/ /_/\___/_/_/   
-                                                        
-"@ -ForegroundColor Cyan
-
-Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString()) Ready!" -ForegroundColor Green
-Write-Host "Type 'help-me' for available commands" -ForegroundColor DarkGray
-Write-Host "", '$1'
-            $repo = $remoteUrl -replace '^git@github\.com:[^/]+/(.*)\.git
-
-# System Info and Utilities
-function sysinfo {
-    Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "  System Information" -ForegroundColor White
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "Computer     : $env:COMPUTERNAME" -ForegroundColor Green
-    Write-Host "User         : $env:USERNAME" -ForegroundColor Green
-    Write-Host "Domain       : $env:USERDOMAIN" -ForegroundColor Green
-    Write-Host "PowerShell   : $($PSVersionTable.PSVersion)" -ForegroundColor Green
-    Write-Host "OS           : $(Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption)" -ForegroundColor Green
-    Write-Host "Uptime       : $((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime)" -ForegroundColor Green
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
-}
-
-# Enhanced help function
-function help-me {
-    Write-Host "`n╔═══════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║       PowerShell Commands Help        ║" -ForegroundColor Magenta
-    Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
-    
-    Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
-    Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
-    Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
-    Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
-    Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
-    
-    Write-Host "`n🔧 Git Commands:" -ForegroundColor Yellow
-    Write-Host "  gs         → git status" -ForegroundColor Gray
-    Write-Host "  ga         → git add ." -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit -m 'msg'" -ForegroundColor Gray
-    Write-Host "  gp         → git push" -ForegroundColor Gray
-    Write-Host "  gpl        → git pull" -ForegroundColor Gray
-    Write-Host "  gl         → git log (last 10)" -ForegroundColor Gray
-    Write-Host "  gb         → git branch" -ForegroundColor Gray
-    Write-Host "  gco branch → git checkout branch" -ForegroundColor Gray
-    
-    Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
-    Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
-    Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
-    Write-Host "  grep       → Search in files" -ForegroundColor Gray
-    Write-Host "  touch file → Create empty file" -ForegroundColor Gray
-    Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
-    Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
-    Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
-    
-    Write-Host "`n💡 Tips:" -ForegroundColor Yellow
-    Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
-    Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
-    Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-# Quick file operations
-function mkcd { 
-    param($dir) 
-    mkdir $dir -ErrorAction SilentlyContinue
-    cd $dir 
-}
-
-# Reload profile
-function reload {
-    Write-Host "Reloading profile..." -ForegroundColor Yellow
-    . $PROFILE
-    Write-Host "✓ Profile reloaded!" -ForegroundColor Green
-}
-
-# Pretty directory listing
-function la {
-    Get-ChildItem -Force | Format-Table Mode, LastWriteTime, Length, Name -AutoSize
-}
-
-# Search functions
-function find-file {
-    param([string]$name)
-    Write-Host "Searching for '$name'..." -ForegroundColor Yellow
-    Get-ChildItem -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$name*" }
-}
-
-function find-text {
-    param([string]$pattern, [string]$path = ".")
-    Write-Host "Searching for '$pattern' in $path..." -ForegroundColor Yellow
-    Get-ChildItem -Path $path -Recurse -File | Select-String -Pattern $pattern
-}
-
-# Quick calculations
-function calc {
-    param([string]$expression)
-    try {
-        $result = Invoke-Expression $expression
-        Write-Host "$expression = " -NoNewline -ForegroundColor Gray
-        Write-Host $result -ForegroundColor Green
-    } catch {
-        Write-Host "Invalid expression" -ForegroundColor Red
-    }
-}
-
-# Version-specific features (handles both PS5 & PS7)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    # PS7+ specific features
-    if ($PSStyle) {
-        $PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue + $PSStyle.Bold
-        $PSStyle.FileInfo.Executable = $PSStyle.Foreground.Green
-        $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.Cyan
-    }
-    
-    # Tab completion improvements for PS7
-    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
-}
-else {
-    # PS5 compatibility
-    # Tab completion for PS5
-    Set-PSReadLineKeyHandler -Key Tab -Function Complete
-}
-
-# Common PSReadLine settings (both PS5 & PS7)
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Load additional functions if they exist
-$functionsPath = Join-Path $PSScriptRoot "functions.ps1"
-if (Test-Path $functionsPath) { . $functionsPath }
-
-# Load work-specific settings if on work machine
-if ($env:USERDOMAIN -match "LogixHealth|LOGIX") {
-    $workPath = Join-Path $PSScriptRoot "work-specific.ps1"
-    if (Test-Path $workPath) { . $workPath }
-}
-
-# Welcome message with ASCII art
-Clear-Host
-Write-Host @"
-    ____                          _____ __         ____
-   / __ \____ _      _____  _____/ ___// /_  ___  / / /
-  / /_/ / __ \ | /| / / _ \/ ___/\__ \/ __ \/ _ \/ / / 
- / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  
-/_/    \____/|__/|__/\___/_/   /____/_/ /_/\___/_/_/   
-                                                        
-"@ -ForegroundColor Cyan
-
-Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString()) Ready!" -ForegroundColor Green
-Write-Host "Type 'help-me' for available commands" -ForegroundColor DarkGray
-Write-Host "", '$1'
+            $owner = $remoteUrl -replace '^git@github\.com:([^/]+)/.*\.git$', '$1'
+            $repo = $remoteUrl -replace '^git@github\.com:[^/]+/(.*)\.git$', '$1'
         } else {
-            $owner = $remoteUrl -replace 'https://github\.com/([^/]+)/.*\.git', '$1'
-            $repo = $remoteUrl -replace 'https://github\.com/[^/]+/(.*)\.git', '$1'
+            $owner = $remoteUrl -replace 'https://github\.com/([^/]+)/.*\.git$', '$1'
+            $repo = $remoteUrl -replace 'https://github\.com/[^/]+/(.*)\.git$', '$1'
         }
         $url = "https://github.com/$owner/$repo/commit/$commitSha"
     } elseif ($remoteUrl -match "dev.azure.com|azuredevops") {
@@ -957,155 +333,7 @@ function gsw {
     # Git switch by branch name or number
     param([string]$branchOrNumber)
     
-    if ($branchOrNumber -match '^\d+
-
-# System Info and Utilities
-function sysinfo {
-    Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "  System Information" -ForegroundColor White
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "Computer     : $env:COMPUTERNAME" -ForegroundColor Green
-    Write-Host "User         : $env:USERNAME" -ForegroundColor Green
-    Write-Host "Domain       : $env:USERDOMAIN" -ForegroundColor Green
-    Write-Host "PowerShell   : $($PSVersionTable.PSVersion)" -ForegroundColor Green
-    Write-Host "OS           : $(Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption)" -ForegroundColor Green
-    Write-Host "Uptime       : $((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime)" -ForegroundColor Green
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
-}
-
-# Enhanced help function
-function help-me {
-    Write-Host "`n╔═══════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║       PowerShell Commands Help        ║" -ForegroundColor Magenta
-    Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
-    
-    Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
-    Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
-    Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
-    Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
-    Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
-    
-    Write-Host "`n🔧 Git Commands:" -ForegroundColor Yellow
-    Write-Host "  gs         → git status" -ForegroundColor Gray
-    Write-Host "  ga         → git add ." -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit -m 'msg'" -ForegroundColor Gray
-    Write-Host "  gp         → git push" -ForegroundColor Gray
-    Write-Host "  gpl        → git pull" -ForegroundColor Gray
-    Write-Host "  gl         → git log (last 10)" -ForegroundColor Gray
-    Write-Host "  gb         → git branch" -ForegroundColor Gray
-    Write-Host "  gco branch → git checkout branch" -ForegroundColor Gray
-    
-    Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
-    Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
-    Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
-    Write-Host "  grep       → Search in files" -ForegroundColor Gray
-    Write-Host "  touch file → Create empty file" -ForegroundColor Gray
-    Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
-    Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
-    Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
-    
-    Write-Host "`n💡 Tips:" -ForegroundColor Yellow
-    Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
-    Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
-    Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-# Quick file operations
-function mkcd { 
-    param($dir) 
-    mkdir $dir -ErrorAction SilentlyContinue
-    cd $dir 
-}
-
-# Reload profile
-function reload {
-    Write-Host "Reloading profile..." -ForegroundColor Yellow
-    . $PROFILE
-    Write-Host "✓ Profile reloaded!" -ForegroundColor Green
-}
-
-# Pretty directory listing
-function la {
-    Get-ChildItem -Force | Format-Table Mode, LastWriteTime, Length, Name -AutoSize
-}
-
-# Search functions
-function find-file {
-    param([string]$name)
-    Write-Host "Searching for '$name'..." -ForegroundColor Yellow
-    Get-ChildItem -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$name*" }
-}
-
-function find-text {
-    param([string]$pattern, [string]$path = ".")
-    Write-Host "Searching for '$pattern' in $path..." -ForegroundColor Yellow
-    Get-ChildItem -Path $path -Recurse -File | Select-String -Pattern $pattern
-}
-
-# Quick calculations
-function calc {
-    param([string]$expression)
-    try {
-        $result = Invoke-Expression $expression
-        Write-Host "$expression = " -NoNewline -ForegroundColor Gray
-        Write-Host $result -ForegroundColor Green
-    } catch {
-        Write-Host "Invalid expression" -ForegroundColor Red
-    }
-}
-
-# Version-specific features (handles both PS5 & PS7)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    # PS7+ specific features
-    if ($PSStyle) {
-        $PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue + $PSStyle.Bold
-        $PSStyle.FileInfo.Executable = $PSStyle.Foreground.Green
-        $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.Cyan
-    }
-    
-    # Tab completion improvements for PS7
-    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
-}
-else {
-    # PS5 compatibility
-    # Tab completion for PS5
-    Set-PSReadLineKeyHandler -Key Tab -Function Complete
-}
-
-# Common PSReadLine settings (both PS5 & PS7)
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Load additional functions if they exist
-$functionsPath = Join-Path $PSScriptRoot "functions.ps1"
-if (Test-Path $functionsPath) { . $functionsPath }
-
-# Load work-specific settings if on work machine
-if ($env:USERDOMAIN -match "LogixHealth|LOGIX") {
-    $workPath = Join-Path $PSScriptRoot "work-specific.ps1"
-    if (Test-Path $workPath) { . $workPath }
-}
-
-# Welcome message with ASCII art
-Clear-Host
-Write-Host @"
-    ____                          _____ __         ____
-   / __ \____ _      _____  _____/ ___// /_  ___  / / /
-  / /_/ / __ \ | /| / / _ \/ ___/\__ \/ __ \/ _ \/ / / 
- / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  
-/_/    \____/|__/|__/\___/_/   /____/_/ /_/\___/_/_/   
-                                                        
-"@ -ForegroundColor Cyan
-
-Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString()) Ready!" -ForegroundColor Green
-Write-Host "Type 'help-me' for available commands" -ForegroundColor DarkGray
-Write-Host "") {
+    if ($branchOrNumber -match '^\d+$') {
         $branches = git for-each-ref --format="%(refname:short)" refs/heads/ | Sort-Object
         $branchName = $branches[$branchOrNumber - 1]
     } else {
@@ -1138,6 +366,19 @@ function gtc {
     git tag
 }
 
+# Terraform shortcuts
+function ti { terraform init }
+function ta { terraform apply }
+function td { terraform destroy }
+function tf { terraform fmt }
+function tv { terraform validate }
+function tc {
+    # Terraform clean
+    Remove-Item -Recurse -Force .terraform -ErrorAction SilentlyContinue
+    Remove-Item -Force terraform.tfstate* -ErrorAction SilentlyContinue
+    Remove-Item -Force .terraform.lock.hcl -ErrorAction SilentlyContinue
+}
+
 # System Info and Utilities
 function sysinfo {
     Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
@@ -1159,28 +400,64 @@ function help-me {
     Write-Host "╚═══════════════════════════════════════╝" -ForegroundColor Magenta
     
     Write-Host "`n📁 Navigation:" -ForegroundColor Yellow
-    Write-Host "  repos      → Go to repositories folder" -ForegroundColor Gray
+    Write-Host "  r          → Go to repositories folder" -ForegroundColor Gray
     Write-Host "  desktop    → Go to Desktop" -ForegroundColor Gray
     Write-Host "  downloads  → Go to Downloads" -ForegroundColor Gray
     Write-Host "  ..         → Go up one directory" -ForegroundColor Gray
     Write-Host "  ...        → Go up two directories" -ForegroundColor Gray
     
-    Write-Host "`n🔧 Git Commands:" -ForegroundColor Yellow
-    Write-Host "  gs         → git status" -ForegroundColor Gray
-    Write-Host "  ga         → git add ." -ForegroundColor Gray
-    Write-Host "  gc 'msg'   → git commit -m 'msg'" -ForegroundColor Gray
-    Write-Host "  gp         → git push" -ForegroundColor Gray
-    Write-Host "  gpl        → git pull" -ForegroundColor Gray
-    Write-Host "  gl         → git log (last 10)" -ForegroundColor Gray
-    Write-Host "  gb         → git branch" -ForegroundColor Gray
-    Write-Host "  gco branch → git checkout branch" -ForegroundColor Gray
+    Write-Host "`n🔧 Git Commands (Basic):" -ForegroundColor Yellow
+    Write-Host "  gs         → git status (porcelain)" -ForegroundColor Gray
+    Write-Host "  ga         → git add" -ForegroundColor Gray
+    Write-Host "  gaa        → git add --all" -ForegroundColor Gray
+    Write-Host "  gc 'msg'   → git commit all + push" -ForegroundColor Gray
+    Write-Host "  gp         → git pull --rebase" -ForegroundColor Gray
+    Write-Host "  gu         → git push" -ForegroundColor Gray
+    Write-Host "  guf        → git push --force" -ForegroundColor Gray
+    Write-Host "  gd         → git diff" -ForegroundColor Gray
+    Write-Host "  gl         → git log" -ForegroundColor Gray
+    Write-Host "  glg        → git log graph (pretty)" -ForegroundColor Gray
+    
+    Write-Host "`n🔀 Git Branches:" -ForegroundColor Yellow
+    Write-Host "  gb desc    → create branch (auto-named)" -ForegroundColor Gray
+    Write-Host "  gbl        → list branches with numbers" -ForegroundColor Gray
+    Write-Host "  gsw 2      → switch to branch #2" -ForegroundColor Gray
+    Write-Host "  gswm       → switch to main + cleanup" -ForegroundColor Gray
+    Write-Host "  gbd 2      → delete branch #2 (local+remote)" -ForegroundColor Gray
+    Write-Host "  gbdl 2     → delete branch #2 (local only)" -ForegroundColor Gray
+    Write-Host "  gbc        → clean merged branches" -ForegroundColor Gray
+    Write-Host "  gbs        → squash all branch commits" -ForegroundColor Gray
+    
+    Write-Host "`n📝 Git Advanced:" -ForegroundColor Yellow
+    Write-Host "  gpr        → create pull request" -ForegroundColor Gray
+    Write-Host "  gcs        → show last commit in browser" -ForegroundColor Gray
+    Write-Host "  gcu        → undo last commit (soft)" -ForegroundColor Gray
+    Write-Host "  grb        → git rebase" -ForegroundColor Gray
+    Write-Host "  grbm       → rebase on main" -ForegroundColor Gray
+    Write-Host "  grbc       → rebase continue" -ForegroundColor Gray
+    Write-Host "  gsq 3      → squash last 3 commits" -ForegroundColor Gray
+    Write-Host "  gst/gstp   → stash/stash pop" -ForegroundColor Gray
+    Write-Host "  grv sha    → revert commit" -ForegroundColor Gray
+    Write-Host "  grvl       → revert last commit" -ForegroundColor Gray
+    
+    Write-Host "`n☁️ Infrastructure:" -ForegroundColor Yellow
+    Write-Host "  ti         → terraform init" -ForegroundColor Gray
+    Write-Host "  ta         → terraform apply" -ForegroundColor Gray
+    Write-Host "  td         → terraform destroy" -ForegroundColor Gray
+    Write-Host "  tf         → terraform fmt" -ForegroundColor Gray
+    Write-Host "  tv         → terraform validate" -ForegroundColor Gray
+    Write-Host "  tc         → terraform clean (remove files)" -ForegroundColor Gray
     
     Write-Host "`n🛠️ Utilities:" -ForegroundColor Yellow
     Write-Host "  ll         → List files (Get-ChildItem)" -ForegroundColor Gray
+    Write-Host "  la         → List all files (including hidden)" -ForegroundColor Gray
     Write-Host "  which cmd  → Find command location" -ForegroundColor Gray
     Write-Host "  grep       → Search in files" -ForegroundColor Gray
     Write-Host "  touch file → Create empty file" -ForegroundColor Gray
     Write-Host "  mkcd dir   → Create and enter directory" -ForegroundColor Gray
+    Write-Host "  find-file  → Search for files by name" -ForegroundColor Gray
+    Write-Host "  find-text  → Search for text in files" -ForegroundColor Gray
+    Write-Host "  calc expr  → Quick calculator" -ForegroundColor Gray
     Write-Host "  sysinfo    → Show system information" -ForegroundColor Gray
     Write-Host "  reload     → Reload PowerShell profile" -ForegroundColor Gray
     
@@ -1188,6 +465,7 @@ function help-me {
     Write-Host "  - Tab completion works everywhere!" -ForegroundColor DarkGray
     Write-Host "  - Use Ctrl+R to search command history" -ForegroundColor DarkGray
     Write-Host "  - Type 'help <command>' for detailed help" -ForegroundColor DarkGray
+    Write-Host "  - Type 'Get-Command g*' to see all git functions" -ForegroundColor DarkGray
     Write-Host ""
 }
 
