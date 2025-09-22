@@ -1,42 +1,5 @@
 # local-configs
 
-Personal configuration files for PowerShell, AutoHotkey, and other local development tools.
-
-## 📁 Repository Structure
-
-```
-local-configs/
-├── PowerShell/
-│   ├── common-profile.ps1      # Common profile loaded in all PS sessions
-│   ├── ps5-profile.ps1         # PowerShell 5.x specific settings
-│   ├── ps7-profile.ps1         # PowerShell 7+ specific settings
-│   └── Scripts/                # Additional PowerShell scripts
-├── AutoHotkey/
-│   └── main.ahk               # AutoHotkey shortcuts and productivity scripts
-├── Setup-PowerShellProfile.ps1 # Universal setup script
-└── README.md
-```
-
-## 🚀 Quick Setup
-
-### One-Line Setup (Recommended)
-
-Run this command in PowerShell on any machine (work or personal):
-
-```powershell
-irm https://raw.githubusercontent.com/Jeenil/local-configs/main/Setup-PowerShellProfile.ps1 | iex
-```
-
-This automatically:
-- Detects if you're on a work or personal machine
-- Clones the repository to the correct location
-- Sets up your PowerShell profile
-- Creates all necessary directories
-
-### Manual Setup
-
-If you prefer to set up manually:
-
 ```powershell
 # Clone repository
 git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\local-configs"
@@ -45,7 +8,7 @@ git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\lo
 & "$env:USERPROFILE\repos\local-configs\Setup-PowerShellProfile.ps1"
 ```
 
-## 📋 PowerShell Features
+## PowerShell Features
 
 ### Aliases
 - `ll` - List files (detailed view)
@@ -113,26 +76,10 @@ $link.Save()
 
 ## 🔧 Customization
 
-### PowerShell
-- **Common settings**: Edit `PowerShell/common-profile.ps1`
-- **PS5-specific**: Edit `PowerShell/ps5-profile.ps1`
-- **PS7-specific**: Edit `PowerShell/ps7-profile.ps1`
-- **Add scripts**: Drop `.ps1` files in `PowerShell/Scripts/`
-
 ### AutoHotkey
 - Edit `AutoHotkey/main.ahk` to add or modify shortcuts
 - Reload with `Ctrl+Shift+Alt+R` after changes
-
-## 🔄 Syncing Changes
-
 After making changes:
-
-```powershell
-cd "$env:USERPROFILE\repos\local-configs"  # or C:\repositories\local-configs
-git add .
-git commit -m "Update configuration"
-git push
-```
 
 On another machine:
 
@@ -140,18 +87,12 @@ On another machine:
 Update-Profile  # This pulls changes and reloads
 ```
 
-## 🖥️ Multi-Machine Support
-
-The configuration automatically detects:
-- **Work machines**: Domain matches LogixHealth or username is jeepatel
-- **Personal machines**: Everything else
-
 Based on detection:
 - Repository location adjusts (`C:\repos` vs `C:\repositories`)
 - Navigation shortcuts adapt (work folder vs projects folder)
 - Prompt colors indicate environment
 
-## 📝 Included Tools
+## Included Tools
 
 - [x] PowerShell profiles (PS5 & PS7)
 - [x] AutoHotkey productivity shortcuts
@@ -159,7 +100,5 @@ Based on detection:
 - [ ] Windows Terminal settings
 - [ ] VS Code settings sync
 - [ ] Git configuration
-
-## 🤝 Contributing
 
 This is a personal configuration repository, but feel free to fork and adapt for your own use!
