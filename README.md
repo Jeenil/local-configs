@@ -79,13 +79,6 @@ $link.Save()
 ### AutoHotkey
 - Edit `AutoHotkey/main.ahk` to add or modify shortcuts
 - Reload with `Ctrl+Shift+Alt+R` after changes
-After making changes:
-
-On another machine:
-
-```powershell
-Update-Profile  # This pulls changes and reloads
-```
 
 Based on detection:
 - Repository location adjusts (`C:\repos` vs `C:\repositories`)
