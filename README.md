@@ -74,7 +74,7 @@ $link.TargetPath = $target
 $link.Save()
 ```
 
-## 🔧 Customization
+## Customization
 
 ### AutoHotkey
 - Edit `AutoHotkey/main.ahk` to add or modify shortcuts
