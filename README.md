@@ -36,7 +36,7 @@ git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\lo
 - `help-me` - Show all available commands
 - Custom colored prompt with environment indicator
 
-## ⌨️ AutoHotkey Shortcuts
+## AutoHotkey Shortcuts
 
 ### Core Hotkeys
 - `Ctrl+Shift+Alt+R` - Reload AutoHotkey script
