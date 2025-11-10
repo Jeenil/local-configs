@@ -1,165 +1,271 @@
-# local-configs
+# Personal Configuration Files
 
-Personal configuration files for PowerShell, AutoHotkey, and other local development tools.
+Cross-platform shell configurations, keyboard shortcuts, and productivity tools.
 
-## 📁 Repository Structure
+## Quick Start
 
-```
-local-configs/
-├── PowerShell/
-│   ├── common-profile.ps1      # Common profile loaded in all PS sessions
-│   ├── ps5-profile.ps1         # PowerShell 5.x specific settings
-│   ├── ps7-profile.ps1         # PowerShell 7+ specific settings
-│   └── Scripts/                # Additional PowerShell scripts
-├── AutoHotkey/
-│   └── main.ahk               # AutoHotkey shortcuts and productivity scripts
-├── Setup-PowerShellProfile.ps1 # Universal setup script
-└── README.md
-```
+### Installation
 
-## 🚀 Quick Setup
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/configs.git
+cd configs
 
-### One-Line Setup (Recommended)
+# Run the installer for your platform
+# On Mac/Linux:
+./install.sh
 
-Run this command in PowerShell on any machine (work or personal):
-
-```powershell
-irm https://raw.githubusercontent.com/Jeenil/local-configs/main/Setup-PowerShellProfile.ps1 | iex
+# On Windows (PowerShell):
+.\install.ps1
 ```
 
-This automatically:
-- Detects if you're on a work or personal machine
-- Clones the repository to the correct location
-- Sets up your PowerShell profile
-- Creates all necessary directories
+## What's Included
 
-### Manual Setup
+### Shell Configurations
 
-If you prefer to set up manually:
+- **PowerShell** (`PowerShell/profile.ps1`) - Universal profile for PowerShell 5 & 7, works on Windows, Mac, and Linux
+- **Bash** (`bash/.bash_profile`) - Mac/Linux bash configuration, inherits from [Zamiell's configs](https://github.com/Zamiell/configs)
 
-```powershell
-# Clone repository
-git clone https://github.com/Jeenil/local-configs.git "$env:USERPROFILE\repos\local-configs"
+### Keyboard Shortcuts
 
-# Run setup script
-& "$env:USERPROFILE\repos\local-configs\Setup-PowerShellProfile.ps1"
-```
+- **Windows** (`AutoHotkey/main.ahk`) - Application launchers and window management
+- **Mac** (`karabiner.json`) - Equivalent shortcuts using Karabiner-Elements
 
-## 📋 PowerShell Features
+### Keyboard Shortcut Mappings
 
-### Aliases
-- `ll` - List files (detailed view)
-- `la` - List all files including hidden
-- `which` - Find command location
-- `grep` - Search in files (Select-String)
-- `touch` - Create new file
-- `e` - Open Explorer in current directory
-- `c` - Clear screen
+| Shortcut | Windows (Ctrl+) | Mac (Cmd+) | Application                         |
+| -------- | --------------- | ---------- | ----------------------------------- |
+| 1        | Ctrl+1          | Cmd+1      | Terminal (Windows Terminal / iTerm) |
+| 2        | Ctrl+2          | Cmd+2      | VS Code                             |
+| 3        | Ctrl+3          | Cmd+3      | Obsidian                            |
+| 4        | Ctrl+4          | Cmd+4      | Chrome                              |
+| 5        | Ctrl+5          | Cmd+5      | Edge                                |
+| 6        | Ctrl+6          | Cmd+6      | Notepad++ (Windows only)            |
 
-### Navigation Shortcuts
-- `r` / `repos` - Go to repositories folder
-- `h` / `docs` - Go to Documents folder
-- `home` - Go to user home
-- `desktop` - Go to Desktop
-- `downloads` - Go to Downloads
-- `up [n]` - Go up n directories
-- `mkcd <name>` - Create and enter directory
-- `projects` - Go to projects folder (personal machines only)
-- `work` - Go to work folder (work machines only)
+**Additional Windows Shortcuts (AutoHotkey):**
 
-### Utilities
-- `Get-MyIP` - Show local and public IP addresses
-- `Update-Profile` - Pull latest changes and reload profile
-- `help-me` - Show all available commands
-- Custom colored prompt with environment indicator
-
-## ⌨️ AutoHotkey Shortcuts
-
-### Core Hotkeys
+- `Win+Down` - Minimize active window
+- `Win+Tab` - Cycle forward through windows of same application
+- `Win+Shift+Tab` - Cycle backward through windows of same application
 - `Ctrl+Shift+Alt+R` - Reload AutoHotkey script
 - `Ctrl+Shift+Alt+S` - Suspend/resume AutoHotkey
-- `Win+Down` - Minimize active window
 
-### Window Cycling
-- `Win+Tab` - Cycle forward through windows of the same program
-- `Win+Shift+Tab` - Cycle backward through windows of the same program
+## Command Reference
 
-### Quick Launch Applications
-- `Ctrl+1` - Windows Terminal
-- `Ctrl+2` - VS Code
-- `Ctrl+3` - Obsidian
-- `Ctrl+4` - Chrome
-- `Ctrl+5` - Edge
-- `Ctrl+6` - Notepad++
+### Navigation Shortcuts
 
-### AutoHotkey Setup
+| Command     | Description                  |
+| ----------- | ---------------------------- |
+| `r`         | Go to repositories directory |
+| `..`        | Go up one directory          |
+| `...`       | Go up two directories        |
+| `~`         | Go to home directory         |
+| `desktop`   | Go to Desktop                |
+| `downloads` | Go to Downloads              |
+| `docs`      | Go to Documents              |
 
-1. Install AutoHotkey v2: https://www.autohotkey.com/
-2. The setup script will link to the AutoHotkey config in this repo
-3. Or manually run: `AutoHotkey\main.ahk`
+### Git Commands - Basic
 
-To auto-start with Windows:
+| Command     | Description                              |
+| ----------- | ---------------------------------------- |
+| `gs`        | `git status --porcelain` (short status)  |
+| `ga <file>` | `git add <file>`                         |
+| `gaa`       | `git add --all`                          |
+| `gc "msg"`  | Commit all changes with message and push |
+| `gp`        | `git pull --rebase`                      |
+| `gu`        | `git push`                               |
+| `guf`       | `git push --force`                       |
+| `gd`        | `git diff`                               |
+| `gl`        | `git log`                                |
+| `glg`       | `git log --graph` (pretty format)        |
+
+### Git Commands - Branches
+
+| Command     | Description                          |
+| ----------- | ------------------------------------ |
+| `gb desc`   | Create new branch with auto-naming   |
+| `gbl`       | List branches with numbers           |
+| `gsw 2`     | Switch to branch #2 from list        |
+| `gswm`      | Switch to main + cleanup             |
+| `gswc name` | Create and switch to new branch      |
+| `gbd 2`     | Delete branch #2 (local + remote)    |
+| `gbdl 2`    | Delete branch #2 (local only)        |
+| `gbc`       | Clean merged/gone branches           |
+| `gbs`       | Squash all commits on current branch |
+
+### Git Commands - Advanced
+
+| Command     | Description                            |
+| ----------- | -------------------------------------- |
+| `gpr`       | Create pull request                    |
+| `gcs`       | Show last commit in browser            |
+| `gcu`       | Undo last commit (soft reset)          |
+| `gca`       | Amend last commit with current changes |
+| `gcam`      | Amend last commit and edit message     |
+| `grb`       | `git rebase`                           |
+| `grbm`      | Rebase current branch on main          |
+| `grbc`      | Rebase continue (auto-add files)       |
+| `grba`      | Rebase abort                           |
+| `grv <sha>` | Revert specific commit                 |
+| `grvl`      | Revert last commit                     |
+| `grvc`      | Revert continue                        |
+| `gsq 3`     | Squash last 3 commits                  |
+| `gst`       | `git stash`                            |
+| `gstp`      | `git stash pop`                        |
+| `gstl`      | `git stash list`                       |
+| `gstd`      | `git stash drop`                       |
+| `gtc`       | Clean local tags not on remote         |
+
+### Infrastructure as Code
+
+| Command | Description                          |
+| ------- | ------------------------------------ |
+| `ti`    | `terraform init`                     |
+| `ta`    | `terraform apply`                    |
+| `taa`   | `terraform apply -auto-approve`      |
+| `td`    | `terraform destroy`                  |
+| `tda`   | `terraform destroy -auto-approve`    |
+| `tf`    | `terraform fmt`                      |
+| `tv`    | `terraform validate`                 |
+| `tc`    | Terraform clean (remove state files) |
+
+### Utilities
+
+| Command             | Description                       |
+| ------------------- | --------------------------------- |
+| `ll`                | List files with details           |
+| `la`                | List all files (including hidden) |
+| `which cmd`         | Find command location             |
+| `grep`              | Search in files                   |
+| `touch file`        | Create empty file                 |
+| `mkcd dir`          | Create and enter directory        |
+| `find-file name`    | Search for files by name          |
+| `find-text pattern` | Search for text in files          |
+| `calc "2+2"`        | Quick calculator                  |
+| `sysinfo`           | Show system information           |
+| `reload`            | Reload PowerShell profile         |
+| `help-me`           | Show all available commands       |
+
+## Platform-Specific Notes
+
+### Windows
+
+- Requires [AutoHotkey v2](https://www.autohotkey.com/) for keyboard shortcuts
+- PowerShell profile location: `$PROFILE` (typically `$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`)
+- The install script will:
+  - Copy PowerShell profile to `$PROFILE`
+  - Copy AutoHotkey script to startup folder (auto-runs on login)
+  - Set AutoHotkey to run at startup
+
+### macOS
+
+- Requires [Karabiner-Elements](https://karabiner-elements.pqrs.org/) for keyboard shortcuts
+- PowerShell profile location: `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
+- Bash profile location: `~/.bash_profile`
+- The install script will:
+  - Symlink PowerShell profile
+  - Symlink bash profile
+  - Copy Karabiner config to `~/.config/karabiner/karabiner.json`
+
+### Linux
+
+- PowerShell profile location: `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
+- Bash profile location: `~/.bash_profile` or `~/.bashrc`
+- No keyboard shortcut manager included (use your DE's shortcuts)
+
+## Customization
+
+### Work-Specific Settings
+
+The PowerShell profile automatically loads work-specific settings if you're on a work machine (detected via `$env:USERDOMAIN`).
+
+Create a file at `PowerShell/work-specific.ps1` with your work customizations:
+
 ```powershell
-# Create startup shortcut
-$startup = [Environment]::GetFolderPath('Startup')
-$target = "$env:USERPROFILE\repos\local-configs\AutoHotkey\main.ahk"
-$shortcut = "$startup\AutoHotkey.lnk"
+# Example work-specific settings
+function work-server {
+    ssh user@work-server.com
+}
 
-$shell = New-Object -ComObject WScript.Shell
-$link = $shell.CreateShortcut($shortcut)
-$link.TargetPath = $target
-$link.Save()
+# Override repositories path
+function r { Set-Location "D:\WorkRepos" }
 ```
 
-## 🔧 Customization
+### Additional Functions
 
-### PowerShell
-- **Common settings**: Edit `PowerShell/common-profile.ps1`
-- **PS5-specific**: Edit `PowerShell/ps5-profile.ps1`
-- **PS7-specific**: Edit `PowerShell/ps7-profile.ps1`
-- **Add scripts**: Drop `.ps1` files in `PowerShell/Scripts/`
-
-### AutoHotkey
-- Edit `AutoHotkey/main.ahk` to add or modify shortcuts
-- Reload with `Ctrl+Shift+Alt+R` after changes
-
-## 🔄 Syncing Changes
-
-After making changes:
+Create `PowerShell/functions.ps1` for additional custom functions:
 
 ```powershell
-cd "$env:USERPROFILE\repos\local-configs"  # or C:\repositories\local-configs
-git add .
-git commit -m "Update configuration"
-git push
+function my-custom-function {
+    # Your code here
+}
 ```
 
-On another machine:
+### Environment Variables
+
+For bash, create `~/.env` for secret environment variables:
+
+```bash
+export GEMINI_API_KEY="your-api-key-here"
+export AZDO_PERSONAL_ACCESS_TOKEN="your-token-here"
+```
+
+## Troubleshooting
+
+### PowerShell: "Cannot be loaded because running scripts is disabled"
+
+Run PowerShell as Administrator and execute:
 
 ```powershell
-Update-Profile  # This pulls changes and reloads
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-## 🖥️ Multi-Machine Support
+### AutoHotkey: Shortcuts not working
 
-The configuration automatically detects:
-- **Work machines**: Domain matches LogixHealth or username is jeepatel
-- **Personal machines**: Everything else
+1. Make sure AutoHotkey v2 is installed
+2. Check if script is running (system tray icon)
+3. Run script as administrator if needed
 
-Based on detection:
-- Repository location adjusts (`C:\repos` vs `C:\repositories`)
-- Navigation shortcuts adapt (work folder vs projects folder)
-- Prompt colors indicate environment
+### Karabiner: Shortcuts not working
 
-## 📝 Included Tools
+1. Grant necessary permissions in System Settings > Privacy & Security
+2. Restart Karabiner-Elements
+3. Check that your config is loaded in Karabiner UI
 
-- [x] PowerShell profiles (PS5 & PS7)
-- [x] AutoHotkey productivity shortcuts
-- [x] Universal setup script
-- [ ] Windows Terminal settings
-- [ ] VS Code settings sync
-- [ ] Git configuration
+### Git Commands: LLM features not working
 
-## 🤝 Contributing
+Some commands (like auto-generating commit messages) require:
 
-This is a personal configuration repository, but feel free to fork and adapt for your own use!
+- `GEMINI_API_KEY` environment variable set
+- `jq` installed (Windows: `winget install jqlang.jq`)
+
+### Mac: Bash not loading profile
+
+Add to `~/.bashrc`:
+
+```bash
+if [ -f ~/.bash_profile ]; then
+    source ~/.bash_profile
+fi
+```
+
+## Dependencies
+
+### Required
+
+- **Git** - All platforms
+- **PowerShell 5+** - Windows (built-in), Mac/Linux (install separately)
+
+### Optional but Recommended
+
+- **AutoHotkey v2** - Windows keyboard shortcuts
+- **Karabiner-Elements** - Mac keyboard shortcuts
+- **GitHub CLI** (`gh`) - For `gpr` command on GitHub repos
+- **jq** - For Azure DevOps pull requests and LLM features
+- **curl** - For remote bash profile sourcing
+
+## Credits
+
+- Bash profile inherits from [Zamiell's configs](https://github.com/Zamiell/configs)!!!
+
+**Pro tip:** Type `help-me` in PowerShell to see all available commands!
