@@ -266,6 +266,6 @@ fi
 
 ## Credits
 
-- Bash profile inherits from [Zamiell's configs](https://github.com/Zamiell/configs)!!!
+- Bash profile inherits from [Zamiell's configs](https://github.com/Zamiell/configs)
 
 **Pro tip:** Type `help-me` in PowerShell to see all available commands!
