@@ -17,12 +17,3 @@ elif [ -d "/c/repositories" ]; then
 elif [ -d "/c/repos" ]; then
     alias r="cd /c/repos"
 fi
-
-# Custom additions for this machine
-# Suppress bash deprecation warning on macOS
-export BASH_SILENCE_DEPRECATION_WARNING=1
-
-# Node.js path (if using Homebrew on Mac)
-if [ -d "/opt/homebrew/opt/node@22/bin" ]; then
-    export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
-fi
