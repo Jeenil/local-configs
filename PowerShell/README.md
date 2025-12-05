@@ -266,11 +266,3 @@ Alternatively, reload without restarting:
 ```powershell
 . $PROFILE
 ```
-
-## Contributing
-
-This configuration mirrors the Bash profile from [Zamiell/configs](https://github.com/Zamiell/configs). 
-
-## License
-
-Same as the parent Bash configuration.
