@@ -1,27 +1,21 @@
 ; ------------
 ; CORE HOTKEYS
 ; ------------
-
 ^+!r:: Reload
 #SuspendExempt True
 ^+!s:: Suspend
 #SuspendExempt False
-
 #Down::WinMinimize("A")
-
 ; Cycle program windows forward.
 #Tab::{
   activeProcessName := WinGetProcessName("A")
   windowIDs := WinGetList("ahk_exe " activeProcessName)
-
   if (windowIDs.Length <= 1) {
     return
   }
-
   sortedWindowIDs := SortNumArray(windowIDs)
   activeWindowID := WinGetID("A")
   activeWindowIndex := 0
-
   for index, windowID in sortedWindowIDs
   {
     if (windowID = activeWindowID)
@@ -30,35 +24,28 @@
       break
     }
   }
-
   if (activeWindowIndex = 0)
   {
     return
   }
-
   nextWindowIndex := activeWindowIndex + 1
   if (nextWindowIndex > sortedWindowIDs.Length)
   {
     nextWindowIndex := 1
   }
-
   nextWindowID := sortedWindowIDs[nextWindowIndex]
   WinActivate("ahk_id " nextWindowID)
 }
-
 ; Cycle program windows backward.
 #+Tab::{
   activeProcessName := WinGetProcessName("A")
   windowIDs := WinGetList("ahk_exe " activeProcessName)
-
   if (windowIDs.Length <= 1) {
     return
   }
-
   sortedWindowIDs := SortNumArray(windowIDs)
   activeWindowID := WinGetID("A")
   activeWindowIndex := 0
-
   for index, windowID in sortedWindowIDs
   {
     if (windowID = activeWindowID)
@@ -67,22 +54,18 @@
       break
     }
   }
-
   if (activeWindowIndex = 0)
   {
     return
   }
-
   previousWindowIndex := activeWindowIndex - 1
   if (previousWindowIndex < 1)
   {
     previousWindowIndex := sortedWindowIDs.Length
   }
-
   previousWindowID := sortedWindowIDs[previousWindowIndex]
   WinActivate("ahk_id " previousWindowID)
 }
-
 ; From: https://www.autohotkey.com/boards/viewtopic.php?t=113911
 SortNumArray(arr) {
 	str := ""
@@ -92,7 +75,6 @@ SortNumArray(arr) {
 	str := Sort(RTrim(str, "`n"), "N")
 	return StrSplit(str, "`n")
 }
-
 ; Open/activate Windows Terminal
 ^1:: {
     ; "wt.exe" is not the real process name:
@@ -103,7 +85,6 @@ SortNumArray(arr) {
         Run(A_AppData . "\..\Local\Microsoft\WindowsApps\wt.exe")
     }
 }
-
 ; Open/activate VS Code
 ^2::
 {
@@ -113,9 +94,8 @@ SortNumArray(arr) {
         Run("code.exe")
     }
 }
-
-;  Obsidien
-^3:: ; Ctrl +  to open Obsidien
+; Open/activate Obsidian
+^3:: ; Ctrl + 3 to open Obsidian
 {
     if WinExist("ahk_exe obsidian.exe") {
         WinActivate("ahk_exe obsidian.exe")
@@ -123,10 +103,8 @@ SortNumArray(arr) {
         Run("obsidian.exe")
     }
 }
-
-
-; Chrome
-^4:: ;Ctrl + 4 to open Chrome
+; Open/activate Chrome
+^4:: ; Ctrl + 4 to open Chrome
 {
     if WinExist("ahk_exe chrome.exe") {
         WinActivate("ahk_exe chrome.exe")
@@ -134,9 +112,8 @@ SortNumArray(arr) {
         Run("chrome.exe")
     }
 }
-
-;  Edge
-^5:: ; Ctrl + 5 to open edges
+; Open/activate Edge
+^5:: ; Ctrl + 5 to open Edge
 {
     if WinExist("ahk_exe msedge.exe") {
         WinActivate("ahk_exe msedge.exe")
@@ -144,7 +121,6 @@ SortNumArray(arr) {
         Run("msedge.exe")
     }
 }
-
 ; Open/activate Notepad++
 ^6::  ; Ctrl + 6 to open Notepad++
 {
@@ -152,5 +128,23 @@ SortNumArray(arr) {
         WinActivate("ahk_exe notepad++.exe")
     } else {
         Run("notepad++.exe")
+    }
+}
+; Open/activate Microsoft Teams
+^7::  ; Ctrl + 7 to open Teams
+{
+    if WinExist("ahk_exe ms-teams.exe") {
+        WinActivate("ahk_exe ms-teams.exe")
+    } else {
+        Run("ms-teams.exe")
+    }
+}
+; Open/activate File Explorer
+^8::  ; Ctrl + 8 to open File Explorer
+{
+    if WinExist("ahk_class CabinetWClass") {
+        WinActivate("ahk_class CabinetWClass")
+    } else {
+        Run("explorer.exe")
     }
 }
