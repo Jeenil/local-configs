@@ -94,13 +94,13 @@ SortNumArray(arr) {
         Run("code.exe")
     }
 }
-; Open/activate Obsidian
-^3:: ; Ctrl + 3 to open Obsidian
+; Open/activate VSCodium (notes)
+^3:: ; Ctrl + 3 to open VSCodium
 {
-    if WinExist("ahk_exe obsidian.exe") {
-        WinActivate("ahk_exe obsidian.exe")
+    if WinExist("ahk_exe codium.exe") {
+        WinActivate("ahk_exe codium.exe")
     } else {
-        Run("obsidian.exe")
+        Run("codium.exe")
     }
 }
 ; Open/activate Chrome

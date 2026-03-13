@@ -26,7 +26,7 @@ See [`PowerShell/README.md`](./PowerShell/README.md) for full setup instructions
 
 Windows keyboard remapping and automation scripts using [AutoHotkey v2](https://www.autohotkey.com/).
 
-- `main.ahk` — Core hotkeys: window cycling (`Win+Tab`), window minimize (`Win+Down`), reload/suspend toggles
+- `main.ahk` — Core hotkeys: window cycling (`Win+Tab`), window minimize (`Win+Down`), reload/suspend toggles, app-launch shortcuts (`Ctrl+1` → Terminal, `Ctrl+2` → VS Code, `Ctrl+3` → VSCodium (notes), `Ctrl+4` → Chrome, ...)
 
 ### [`karabiner/`](./karabiner/)
 
