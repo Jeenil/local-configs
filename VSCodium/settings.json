@@ -1,0 +1,49 @@
+{
+  "editor.fontSize": 16,
+  "editor.mouseWheelZoom": true,
+  "editor.renderWhitespace": "all",
+  "editor.wordWrap": "on",
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.blame.editorDecoration.enabled": false,
+  "git.blame.statusBarItem.enabled": true,
+
+  // Allow custom schemas hosted on GitHub.
+  "json.schemaDownload.trustedDomains": {
+    "https://raw.githubusercontent.com/": true
+  },
+
+  // Prevent the annoying security popup when opening new repositories.
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // By default, the window title will be the name of the current file instead of the workspace.
+  "window.title": "${rootName}",
+
+  // Disable preview tabs (e.g. tab title in italics).
+  "workbench.editor.enablePreview": false,
+
+  // Prevent the tabs from changing colors.
+  "workbench.editor.decorations.badges": false,
+  "workbench.editor.decorations.colors": false,
+
+  // Don't show the welcome screen.
+  "workbench.startupEditor": "none",
+
+  // Prevent the annoying side bar on the right side.
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+
+  // Disable release notes popup on update.
+  "update.showReleaseNotes": false,
+
+  // Enable blank new files.
+  "workbench.editor.empty.hint": "hidden",
+
+  // GitDoc disabled globally — only enabled in the notes repo via .vscode/settings.json.
+  "gitdoc.enabled": false
+}

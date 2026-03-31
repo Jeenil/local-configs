@@ -28,6 +28,14 @@ Windows keyboard remapping and automation scripts using [AutoHotkey v2](https://
 
 - `main.ahk` — Core hotkeys: window cycling (`Win+Tab`), window minimize (`Win+Down`), reload/suspend toggles, app-launch shortcuts (`Ctrl+1` → Terminal, `Ctrl+2` → VS Code, `Ctrl+3` → VSCodium (notes), `Ctrl+4` → Chrome, ...)
 
+### [`VSCodium/`](./VSCodium/)
+
+Global [VSCodium](https://vscodium.com/) user settings — used for the notes-only workflow.
+
+- `settings.json` → `%APPDATA%\Codium\User\settings.json`
+
+Notes-repo-specific overrides (GitDoc enabled, markdown format on save) live in the notes repo at `.vscode/settings.json` and inherit from this base.
+
 ### [`karabiner/`](./karabiner/)
 
 [Karabiner-Elements](https://karabiner-elements.pqrs.org/) config for macOS keyboard remapping.
@@ -56,6 +64,12 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 1. Install [AutoHotkey v2](https://www.autohotkey.com/)
 2. Copy or symlink `AutoHotkey/main.ahk` to your startup folder
 3. Run `main.ahk`
+
+### VSCodium (Windows)
+
+```powershell
+Copy-Item VSCodium\settings.json "$env:APPDATA\Codium\User\settings.json"
+```
 
 ### Karabiner (macOS)
 
