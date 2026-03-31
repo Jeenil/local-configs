@@ -4,6 +4,18 @@ Cross-platform shell configurations and keyboard remapping setups. Designed to k
 
 ---
 
+## Quick Start
+
+Clone and run the setup script — it copies everything to the right places:
+
+```powershell
+git clone https://github.com/Jeenil/local-configs.git
+cd local-configs
+.\setup.ps1
+```
+
+---
+
 ## Contents
 
 ### [`PowerShell/`](./PowerShell/)
@@ -20,7 +32,9 @@ Highlights:
 - **Custom prompt**: shows username, directory, and git branch
 - **Remote loading**: bootstrap script pulls latest config from GitHub on every shell start
 
-See [`PowerShell/README.md`](./PowerShell/README.md) for full setup instructions and command reference.
+See [`PowerShell/README.md`](./PowerShell/README.md) for full command reference.
+
+→ Live location: `$PROFILE`
 
 ### [`AutoHotkey/`](./AutoHotkey/)
 
@@ -28,13 +42,15 @@ Windows keyboard remapping and automation scripts using [AutoHotkey v2](https://
 
 - `main.ahk` — Core hotkeys: window cycling (`Win+Tab`), window minimize (`Win+Down`), reload/suspend toggles, app-launch shortcuts (`Ctrl+1` → Terminal, `Ctrl+2` → VS Code, `Ctrl+3` → VSCodium (notes), `Ctrl+4` → Chrome, ...)
 
+→ Live location: `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\`
+
 ### [`VSCodium/`](./VSCodium/)
 
-Global [VSCodium](https://vscodium.com/) user settings — used for the notes-only workflow.
+Global [VSCodium](https://vscodium.com/) user settings — used for the notes-only workflow (`Ctrl+3`).
 
-- `settings.json` → `%APPDATA%\Codium\User\settings.json`
+- `settings.json` — Base editor settings. Notes-repo-specific overrides (GitDoc, markdown format on save) live in [`notes/.vscode/settings.json`](https://github.com/Jeenil/notes/blob/main/.vscode/settings.json) and inherit from this.
 
-Notes-repo-specific overrides (GitDoc enabled, markdown format on save) live in the notes repo at `.vscode/settings.json` and inherit from this base.
+→ Live location: `%APPDATA%\Codium\User\settings.json`
 
 ### [`karabiner/`](./karabiner/)
 
@@ -42,39 +58,20 @@ Notes-repo-specific overrides (GitDoc enabled, markdown format on save) live in 
 
 - `karabiner.json` — App-launch shortcuts (`Cmd+1` → iTerm, `Cmd+2` → VS Code, etc.)
 
+→ Live location: `~/.config/karabiner/karabiner.json`
+
 ---
 
-## Setup
+## Prerequisites
 
-### PowerShell (Windows)
+Before running `setup.ps1`, make sure these are installed:
 
-```powershell
-# 1. Find your profile path
-$PROFILE
-
-# 2. Copy PowerShell_profile.ps1 content to that location
-#    It will auto-download profile_remote.ps1 from GitHub on startup
-
-# 3. Set execution policy if needed (run as Administrator)
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-### AutoHotkey (Windows)
-
-1. Install [AutoHotkey v2](https://www.autohotkey.com/)
-2. Copy or symlink `AutoHotkey/main.ahk` to your startup folder
-3. Run `main.ahk`
-
-### VSCodium (Windows)
-
-```powershell
-Copy-Item VSCodium\settings.json "$env:APPDATA\Codium\User\settings.json"
-```
-
-### Karabiner (macOS)
-
-1. Install [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
-2. Copy `karabiner/karabiner.json` to `~/.config/karabiner/karabiner.json`
+- [AutoHotkey v2](https://www.autohotkey.com/)
+- [VSCodium](https://vscodium.com/)
+- PowerShell execution policy set to allow scripts:
+  ```powershell
+  Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
 
 ---
 
