@@ -5,6 +5,8 @@
   "editor.wordWrap": "on",
   "editor.rulers": [100],
   "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "files.eol": "\n",
