@@ -121,17 +121,8 @@ SortNumArray(arr) {
         Run("msedge.exe")
     }
 }
-; Open/activate Notepad++
-^6::  ; Ctrl + 6 to open Notepad++
-{
-    if WinExist("ahk_exe notepad++.exe") {
-        WinActivate("ahk_exe notepad++.exe")
-    } else {
-        Run("notepad++.exe")
-    }
-}
 ; Open/activate Microsoft Teams
-^7::  ; Ctrl + 7 to open Teams
+^6::  ; Ctrl + 7 to open Teams
 {
     if WinExist("ahk_exe ms-teams.exe") {
         WinActivate("ahk_exe ms-teams.exe")
@@ -140,7 +131,7 @@ SortNumArray(arr) {
     }
 }
 ; Open/activate File Explorer
-^8::  ; Ctrl + 8 to open File Explorer
+^7::  ; Ctrl + 8 to open File Explorer
 {
     if WinExist("ahk_class CabinetWClass") {
         WinActivate("ahk_class CabinetWClass")
