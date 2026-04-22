@@ -18,6 +18,21 @@ cd local-configs
 
 ## Contents
 
+### [`bash/`](./bash/)
+
+Git Bash profile that loads a full shell environment on every session.
+
+- **`.bash_profile`** — Loader: curls the latest [`bashrc.sh`](https://github.com/Jeenil/configs/blob/main/bash/bashrc.sh) and `bun-completions.sh` from [Jeenil/configs](https://github.com/Jeenil/configs) into `~/.config/jeenil-configs/bash/` and sources them. Inherits all aliases and functions from that repo automatically.
+- **`bashrc_local.sh`** — Personal additions: PATH, Claude Code multi-account aliases (`claude-personal`, `claude-work`), and repo shortcut (`r`).
+
+Highlights (via [Jeenil/configs](https://github.com/Jeenil/configs)):
+- **Git workflow**: `gb`, `gbl`, `gbd`, `gc`, `gpr`, `gsw`, `grb`, and more
+- **Fork sync**: `gh-sync` — rebases your fork's main branch onto upstream and pushes
+- **kubectl, Terraform, Pulumi, npm** shortcuts
+- **LLM integration**: auto-generate commit messages and PR descriptions
+
+→ Live locations: `~/.bash_profile`, `~/.bashrc_local.sh`
+
 ### [`PowerShell/`](./PowerShell/)
 
 PowerShell profile with a full suite of shell aliases and automation — mirroring a Bash workflow on Windows.
