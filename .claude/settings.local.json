@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(cp /c/repositories/local-configs/bash/bashrc_local.sh ~/.bashrc_local.sh)",
+      "Bash(cp /c/repositories/local-configs/bash/.bash_profile ~/.bash_profile)"
+    ]
+  }
+}
