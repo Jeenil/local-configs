@@ -11,4 +11,4 @@ source "$CONFIGS_BASH_DIR/bashrc.sh"
 
 # Load personal overrides and additions.
 # shellcheck source=/dev/null
-source "$(dirname "${BASH_SOURCE[0]}")/bashrc_local.sh"
+source ~/.bashrc_local.sh

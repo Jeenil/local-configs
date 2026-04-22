@@ -19,6 +19,7 @@ Write-Host "AutoHotkey script added to startup"
 # Git Bash profile
 $gitBashHome = "$env:USERPROFILE"
 Copy-Item "$repo\bash\.bash_profile" "$gitBashHome\.bash_profile" -Force
+Copy-Item "$repo\bash\bashrc_local.sh" "$gitBashHome\.bashrc_local.sh" -Force
 Write-Host "Git Bash profile applied"
 
 Write-Host "`nDone. Restart AutoHotkey and reload your PowerShell and Git Bash sessions."
