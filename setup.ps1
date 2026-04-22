@@ -16,4 +16,9 @@ $startup = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
 Copy-Item "$repo\AutoHotkey\main.ahk" "$startup\main.ahk" -Force
 Write-Host "AutoHotkey script added to startup"
 
-Write-Host "`nDone. Restart AutoHotkey and reload your PowerShell session."
+# Git Bash profile
+$gitBashHome = "$env:USERPROFILE"
+Copy-Item "$repo\bash\.bash_profile" "$gitBashHome\.bash_profile" -Force
+Write-Host "Git Bash profile applied"
+
+Write-Host "`nDone. Restart AutoHotkey and reload your PowerShell and Git Bash sessions."
