@@ -1,0 +1,9 @@
+Host azuredevops.logixhealth.com
+    User git
+    IdentityFile ~/.ssh/work/id_rsa
+    LogLevel ERROR
+
+Host ssh.dev.azure.com
+    User git
+    IdentityFile ~/.ssh/work/id_rsa
+    LogLevel ERROR

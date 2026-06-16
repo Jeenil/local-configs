@@ -1,0 +1,8 @@
+# Convert all files to use "\n" line endings.
+* text=auto eol=lf
+
+# Specify the file type for some binary files to prevent Git from changing the line endings upon
+# cloning the repository.
+*.mp3 binary
+*.png binary
+*.wav binary
