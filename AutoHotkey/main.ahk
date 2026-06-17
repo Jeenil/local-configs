@@ -76,66 +76,40 @@ SortNumArray(arr) {
 	return StrSplit(str, "`n")
 }
 ; Open/activate Windows Terminal
-^1:: {
-    ; "wt.exe" is not the real process name:
-    ; https://stackoverflow.com/a/68006153/26408392
-    if (WinExist("ahk_exe WindowsTerminal.exe")) {
-        WinActivate("ahk_exe WindowsTerminal.exe")
-    } else {
-        Run(A_AppData . "\..\Local\Microsoft\WindowsApps\wt.exe")
-    }
-}
+; "wt.exe" is not the real process name: https://stackoverflow.com/a/68006153/26408392
+^1:: CycleOrLaunch("ahk_exe WindowsTerminal.exe", A_AppData . "\..\Local\Microsoft\WindowsApps\wt.exe")
 ; Open/activate VS Code
-^2::
-{
-    if WinExist("ahk_exe code.exe") {
-        WinActivate("ahk_exe code.exe")
-    } else {
-        Run("code.exe")
-    }
-}
-; Open/activate VSCodium (notes)
-^3:: ; Ctrl + 3 to open VSCodium
-{
-    if WinExist("ahk_exe codium.exe") {
-        WinActivate("ahk_exe codium.exe")
-    } else {
-        Run("codium.exe")
-    }
-}
+^2:: CycleOrLaunch("ahk_exe code.exe", "code.exe")
+; Open/activate VSCodium
+^3:: CycleOrLaunch("ahk_exe VSCodium.exe", "wsl.exe codium")
 ; Open/activate Chrome
-^4:: ; Ctrl + 4 to open Chrome
-{
-    if WinExist("ahk_exe chrome.exe") {
-        WinActivate("ahk_exe chrome.exe")
-    } else {
-        Run("chrome.exe")
-    }
-}
+^4:: CycleOrLaunch("ahk_exe chrome.exe", "chrome.exe")
 ; Open/activate Edge
-^5:: ; Ctrl + 5 to open Edge
-{
-    if WinExist("ahk_exe msedge.exe") {
-        WinActivate("ahk_exe msedge.exe")
-    } else {
-        Run("msedge.exe")
-    }
-}
+^5:: CycleOrLaunch("ahk_exe msedge.exe", "msedge.exe")
 ; Open/activate Microsoft Teams
-^6::  ; Ctrl + 7 to open Teams
-{
-    if WinExist("ahk_exe ms-teams.exe") {
-        WinActivate("ahk_exe ms-teams.exe")
-    } else {
-        Run("ms-teams.exe")
-    }
-}
+^6:: CycleOrLaunch("ahk_exe ms-teams.exe", "ms-teams.exe")
 ; Open/activate File Explorer
-^7::  ; Ctrl + 8 to open File Explorer
-{
-    if WinExist("ahk_class CabinetWClass") {
-        WinActivate("ahk_class CabinetWClass")
-    } else {
-        Run("explorer.exe")
+^7:: CycleOrLaunch("ahk_class CabinetWClass", "explorer.exe")
+
+CycleOrLaunch(winCriteria, launchCmd) {
+    titledWindows := []
+    for hwnd in WinGetList(winCriteria) {
+        if (WinGetTitle(hwnd) != "")
+            titledWindows.Push(hwnd)
     }
+    if (titledWindows.Length = 0) {
+        Run(launchCmd)
+        return
+    }
+    titledWindows := SortNumArray(titledWindows)
+    activeHwnd := WinGetID("A")
+    activeIndex := 0
+    for i, hwnd in titledWindows {
+        if (hwnd = activeHwnd) {
+            activeIndex := i
+            break
+        }
+    }
+    nextIndex := Mod(activeIndex, titledWindows.Length) + 1
+    WinActivate("ahk_id " titledWindows[nextIndex])
 }
