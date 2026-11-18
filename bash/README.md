@@ -165,7 +165,7 @@ alias gaa="git add --all"
 
 ### `gb_`
 
-"gb\_" is an alias for "gb --no-convention".
+"gb_" is an alias for "gb --no-convention".
 
 ```sh
 alias gb_="gb --no-convention"
@@ -175,7 +175,7 @@ alias gb_="gb --no-convention"
 
 "gbcl" is short for "git branch clean", which will remove all local branches that do not exist on
 the remote repository.
-<https://stackoverflow.com/questions/7726949/remove-tracking-branches-no-longer-on-remote>
+https://stackoverflow.com/questions/7726949/remove-tracking-branches-no-longer-on-remote
 
 ### `gbcp`
 
@@ -213,12 +213,11 @@ changed as part of the branch.
 ### `gbr`
 
 "gbr" is short for "git branch rename".
-
 - You can use the "-n" or "--no-convention" flag to omit the special naming convention.
 
 ### `gbr_`
 
-"gbr\_" is an alias for "gbr --no-convention".
+"gbr_" is an alias for "gbr --no-convention".
 
 ```sh
 alias gbr_="gbr --no-convention"
@@ -541,7 +540,7 @@ alias gswc="git switch -c"
 
 "gtc" is short for "git tags clean", which will remote all local tags that do not exist on the
 remote repository.
-<https://stackoverflow.com/questions/1841341/remove-local-git-tags-that-are-no-longer-on-the-remote-repository>
+https://stackoverflow.com/questions/1841341/remove-local-git-tags-that-are-no-longer-on-the-remote-repository
 
 ### `gu`
 
@@ -806,7 +805,6 @@ _(undocumented)_
 
 A better "ll" alias that shows human-readable file sizes.
 (macOS does not support any of the long-form flags, so we use the short ones instead.)
-
 - "-a" is short for "--all", which shows hidden files.
 - "-h" is short for "--human-readable", which converts bytes to kilobytes and so on.
 - "-F" is short for "--classify", which displays extra characters to signify the file type.
@@ -1032,7 +1030,7 @@ for the current feature branch.
 ### `pr`
 
 "pr" is short for "pulumi refresh". Note that this will overwrite the existing "pr" command:
-<https://man7.org/linux/man-pages/man1/pr.1.html>
+https://man7.org/linux/man-pages/man1/pr.1.html
 
 ```sh
 alias pr="pulumi refresh"
