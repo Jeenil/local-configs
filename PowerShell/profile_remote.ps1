@@ -38,7 +38,7 @@ function ... { Set-Location ..\.. }
 
 # --- GIT COMMANDS (Safe Guarded) ---
 if (Get-Command git -ErrorAction SilentlyContinue) {
-    
+
     # 1. Clear the built-in PowerShell 'gc' (Get-Content) alias
     if (Test-Path Alias:gc) { Remove-Item Alias:gc -Force }
 
@@ -46,11 +46,11 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     function gs  { git status --short --branch }
     function ga  { git add $args }
     function gaa { git add --all }
-    
+
     # Updated Commit Function to handle messages properly
-    function gc { 
+    function gc {
         if ($args) {
-            git commit -m "$($args -join ' ')" 
+            git commit -m "$($args -join ' ')"
         } else {
             git commit # Opens your default editor if no message provided
         }

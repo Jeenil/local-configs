@@ -10,16 +10,16 @@ import re
 import sys
 from pathlib import Path
 
-ALIAS_RE = re.compile(r'^alias\s+([A-Za-z0-9_-]+)=(.*)$')
-FUNCTION_RE = re.compile(r'^([A-Za-z0-9_-]+)\s*\(\)\s*[{(]\s*$')
-BANNER_RE = re.compile(r'^# -{3,}$')
+ALIAS_RE = re.compile(r"^alias\s+([A-Za-z0-9_-]+)=(.*)$")
+FUNCTION_RE = re.compile(r"^([A-Za-z0-9_-]+)\s*\(\)\s*[{(]\s*$")
+BANNER_RE = re.compile(r"^# -{3,}$")
 
 
 def strip_comment(line: str) -> str:
     line = line.rstrip("\n")
     if line == "#":
         return ""
-    return re.sub(r'^#\s?', "", line)
+    return re.sub(r"^#\s?", "", line)
 
 
 def extract_banner_title(lines: list[str]) -> str | None:
@@ -50,7 +50,10 @@ def collect_preceding_comment(lines: list[str], index: int) -> str:
 
 def parse_file(path: Path) -> tuple[str, list[dict]]:
     lines = path.read_text().splitlines()
-    title = extract_banner_title(lines) or path.stem.replace("-", " ").replace("_", " ").title()
+    title = (
+        extract_banner_title(lines)
+        or path.stem.replace("-", " ").replace("_", " ").title()
+    )
 
     entries = []
     seen_names = set()
@@ -106,7 +109,10 @@ def render_entry(entry: dict) -> str:
 
 def main() -> None:
     if len(sys.argv) != 3:
-        print("Usage: generate-readme.py <configs-repo-path> <local-configs-bash-dir>", file=sys.stderr)
+        print(
+            "Usage: generate-readme.py <configs-repo-path> <local-configs-bash-dir>",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     configs_repo_path = Path(sys.argv[1])
@@ -126,7 +132,9 @@ def main() -> None:
     if local_bashrc.is_file():
         title, entries = parse_file(local_bashrc)
         if entries:
-            sections.append(("Personal Overrides (this repo)", local_bashrc.name, entries))
+            sections.append(
+                ("Personal Overrides (this repo)", local_bashrc.name, entries)
+            )
 
     out = []
     out.append("# Bash Command Reference")
@@ -137,7 +145,9 @@ def main() -> None:
         "`bash/commands/` directory, plus a few personal additions in `bashrc_local.sh` here."
     )
     out.append("")
-    out.append(f"Regenerate this file after configs change by running `./generate-readme.sh`.")
+    out.append(
+        f"Regenerate this file after configs change by running `./generate-readme.sh`."
+    )
     out.append("")
     out.append("## Table of Contents")
     out.append("")
@@ -159,7 +169,9 @@ def main() -> None:
     readme_path = local_bash_dir / "README.md"
     readme_path.write_text("\n".join(out).rstrip() + "\n")
     total = sum(len(entries) for _, _, entries in sections)
-    print(f"Wrote {readme_path} with {total} documented commands across {len(sections)} sections.")
+    print(
+        f"Wrote {readme_path} with {total} documented commands across {len(sections)} sections."
+    )
 
 
 if __name__ == "__main__":

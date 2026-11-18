@@ -11,6 +11,7 @@ $PROFILE
 ```
 
 This will typically return something like:
+
 - Windows PowerShell: `C:\Users\<username>\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
 - PowerShell 7+: `C:\Users\<username>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
 
@@ -45,7 +46,7 @@ try {
         -OutFile $remoteProfilePath `
         -UseBasicParsing `
         -ErrorAction Stop
-    
+
     # Source the remote profile
     . $remoteProfilePath
 } catch {
@@ -65,6 +66,7 @@ try {
 All commands from the Bash profile have been ported to PowerShell:
 
 ### Directory Navigation
+
 - `cd <path>` - Change directory and show contents
 - `cdg` - Change to git repository root
 - `r` - Switch to repositories directory
@@ -73,6 +75,7 @@ All commands from the Bash profile have been ported to PowerShell:
 ### Git Commands
 
 #### Branch Management
+
 - `gb [name] [app]` - Create new git branch (with team naming convention)
 - `gb_ [name]` - Create new git branch (without convention)
 - `gbl` - List git branches
@@ -88,6 +91,7 @@ All commands from the Bash profile have been ported to PowerShell:
 - `gswm` - Switch to main/master branch
 
 #### Commits
+
 - `gc [message]` - Commit all changes with message
 - `gca` - Amend last commit
 - `gcam` - Amend last commit and edit message
@@ -95,57 +99,69 @@ All commands from the Bash profile have been ported to PowerShell:
 - `gcu [n]` - Undo last N commits (default 1)
 
 #### Status & Diff
+
 - `gs` - Git status (porcelain format)
 - `gd` - Git diff
 - `gl` - Git log
 - `glg` - Git log with graph
 
 #### Staging
+
 - `ga <files>` - Git add specific files
 - `gaa` - Git add all
 
 #### Push/Pull
+
 - `gp` - Git pull with rebase
 - `gu` - Git push
 - `guf` - Git push force with lease
 
 #### Rebase
+
 - `grb` - Git rebase
 - `grba` - Git rebase abort
 - `grbc` - Git rebase continue (adds all first)
 - `grbm` - Rebase on origin/main
 
 #### Reset
+
 - `grs` - Git reset
 - `grsh` - Git reset hard
 - `grshm` - Reset hard to origin/main
 
 #### Revert
+
 - `grv <sha>` - Revert a commit
 - `grva` - Revert abort
 - `grvc` - Revert continue
 - `grvl` - Revert last commit
 
 #### Stash
+
 - `gst` - Git stash
 - `gstd` - Git stash drop
 - `gstl` - Git stash list
 - `gstp` - Git stash pop
 
 #### Tags
+
 - `gtc` - Clean local tags
 
 #### Merge Conflicts
+
 - `gmc` - List files with merge conflicts
 - `gmco` - Open files with merge conflicts in VS Code
 
 #### Squash
+
 - `gsq <n> [message]` - Squash last N commits
 
 #### Restore
+
 - `grt <files>` - Restore files from merge base
 
 ### kubectl Commands
+
 - `k` - kubectl alias
 - `kdd` - kubectl describe deployment
 - `kdp` - kubectl describe pod
@@ -154,6 +170,7 @@ All commands from the Bash profile have been ported to PowerShell:
 - `kgp` - kubectl get pod
 
 ### npm/Package Manager Commands
+
 - `b` - Build (runs npm/yarn/pnpm/bun run build)
 - `d` - Dev (runs dev script)
 - `l` - Lint (runs lint script)
@@ -164,12 +181,14 @@ All commands from the Bash profile have been ported to PowerShell:
 - `u` - Update (runs update script)
 
 ### Pulumi Commands
+
 - `pd` - pulumi destroy
 - `pp` - pulumi preview
 - `pu` - pulumi up
 - `puy` - pulumi up --yes
 
 ### Terraform Commands
+
 - `ta` - terraform apply
 - `taa` - terraform apply -auto-approve
 - `tc` - terraform clean (removes .terraform, lock files, state files)
@@ -181,12 +200,15 @@ All commands from the Bash profile have been ported to PowerShell:
 - `tv` - terraform validate
 
 ### Utility Commands
+
 - `o <url>` - Open URL in browser
 
 ## Features
 
 ### Auto Git Configuration
+
 The profile automatically sets these git configs:
+
 - `core.autocrlf` = false
 - `core.ignorecase` = false
 - `diff.colorMoved` = zebra
@@ -196,12 +218,15 @@ The profile automatically sets these git configs:
 - `push.autoSetupRemote` = true
 
 ### Environment Variables
+
 - Automatically loads `.env` file from home directory
 - Loads work-specific settings (such as company certificate paths) from the private `secrets` repository, if present
 - Configures Azure CLI certificate bundle
 
 ### Custom Prompt
+
 Shows:
+
 - Username@Hostname
 - Current directory
 - Git branch (if in a git repository)
@@ -209,6 +234,7 @@ Shows:
 ## Differences from Bash Version
 
 Some features from the Bash version are not yet implemented:
+
 1. LLM-powered commit messages (requires API integration)
 2. Azure DevOps pull request creation
 3. Some GitHub-specific features (use `gh` CLI instead)
@@ -232,6 +258,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### Remote Download Fails
 
 If the remote download fails, the profile will warn you but continue. Check:
+
 1. Internet connectivity
 2. GitHub repository URL is correct
 3. File `profile_remote.ps1` exists in your repository
@@ -259,10 +286,12 @@ The profile will automatically load these on startup.
 ## Updates
 
 To update your profile:
+
 1. Modify `profile_remote.ps1` in your GitHub repository
 2. Restart PowerShell (it downloads fresh each time)
 
 Alternatively, reload without restarting:
+
 ```powershell
 . $PROFILE
 ```

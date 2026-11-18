@@ -1,0 +1,4 @@
+{
+  // Prettier handles formatting, and long shell commands are common in these docs.
+  "MD013": false,
+}
