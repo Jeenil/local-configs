@@ -121,12 +121,15 @@ sudo apt-get upgrade --yes
 sudo apt-get install --yes \
   age \
   bind9-dnsutils \
+  build-essential \
   jq \
   podman \
   python-is-python3 \
   ripgrep \
+  ruby-dev \
   shellcheck \
-  unzip
+  unzip \
+  zlib1g-dev
 
 # Set up SSH.
 SSH_DIR="$HOME/.ssh"
@@ -274,6 +277,13 @@ fi
 # Add bun to PATH for the current session (the installer only modifies .bashrc).
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Install Bundler (for Jekyll docs previews). Installed system-wide so it lands in
+# /usr/local/bin, which is already on PATH. The version matches "BUNDLED WITH" in
+# helpful-cmdts/docs/Gemfile.lock; the Ubuntu apt package is older.
+if ! command -v bundle &> /dev/null; then
+  sudo gem install bundler --version 4.1.0
+fi
 
 # Install uv.
 # https://docs.astral.sh/uv/getting-started/installation/
